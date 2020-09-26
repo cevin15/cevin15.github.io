@@ -2,7 +2,7 @@
 
 _2020-09-26_ _09:22_ 
 
-转载自 [Nginx 安装配置 | 菜鸟教程](https://www.runoob.com/linux/nginx-install-setup.html)
+转载自 [Nginx 安装配置 - 菜鸟教程](https://www.runoob.com/linux/nginx-install-setup.html)
 
 ## Nginx
 Nginx("engine x")是一款是由俄罗斯的程序设计师Igor Sysoev所开发高性能的 Web和 反向代理 服务器，也是一个 IMAP/POP3/SMTP 代理服务器。
