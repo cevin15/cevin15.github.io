@@ -63,7 +63,11 @@ PCRE 作用是让 Nginx 支持 Rewrite 功能。
   1. 使用`openssl` 命令提示命令不存在：`openssl: command not found`
     解决方式：增加openssl的命令软连接，`ln -s /usr/local/openssl/bin/openssl /usr/bin/openssl`
   2. 使用`openssl` 命令报错：`error while loading shared libraries: libssl.so.1.1: cannot open shared object file: No such file or directory`
-    解决方式：`echo "/usr/local/openssl/lib >> /etc/ld.so.conf"`
+    解决方式：
+    ```
+    echo "/usr/local/openssl/lib" >> /etc/ld.so.conf
+    ldconfig
+    ```
 
 四. 安装 Nginx  
 1. 下载 Nginx，下载地址：[http://nginx.org/download/nginx-1.6.2.tar.gz](http://nginx.org/download/nginx-1.6.2.tar.gz)
