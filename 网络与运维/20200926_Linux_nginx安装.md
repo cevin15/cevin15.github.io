@@ -1,4 +1,4 @@
-# Linux的虚拟IP设置【转】
+# Linux的Nginx 安装【转】
 
 _2020-09-26_ _09:22_ 
 
@@ -93,6 +93,9 @@ PCRE 作用是让 Nginx 支持 Rewrite 功能。
 ```
 [root@bogon nginx-1.6.2]# /usr/local/webserver/nginx/sbin/nginx -v
 ```
+6. 可能出现的问题
+  1. make 的时候出现
+
 到此，nginx安装完成。
 
 ## Nginx 配置
