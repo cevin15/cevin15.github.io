@@ -95,6 +95,27 @@ PCRE 作用是让 Nginx 支持 Rewrite 功能。
 ```
 6. 可能出现的问题
   1. make 的时候出现
+  ```
+  /bin/sh: line 2: ./config: No such file or directory
+  make[1]: *** [/usr/local/openssl/.openssl/include/openssl/ssl.h] Error 127
+  make[1]: Leaving directory `/usr/local/src/nginx-1.18.0'
+  make: *** [build] Error 2
+  ```
+  路径错误导致。我们调整下nginx中openssl的配置`/usr/local/src/nginx-1.18.0/auto/lib/openssl/conf`，查找到如下配置
+  ```
+  CORE_INCS="$CORE_INCS $OPENSSL/.openssl/include"
+  CORE_DEPS="$CORE_DEPS $OPENSSL/.openssl/include/openssl/ssl.h"
+  CORE_LIBS="$CORE_LIBS $OPENSSL/.openssl/lib/libssl.a"
+  CORE_LIBS="$CORE_LIBS $OPENSSL/.openssl/lib/libcrypto.a"
+  ```
+  调整为
+  ```
+  CORE_INCS="$CORE_INCS $OPENSSL/include"
+  CORE_DEPS="$CORE_DEPS $OPENSSL/include/openssl/ssl.h"
+  CORE_LIBS="$CORE_LIBS $OPENSSL/lib/libssl.a"
+  CORE_LIBS="$CORE_LIBS $OPENSSL/lib/libcrypto.a"
+  ```
+  即删除`.openssl/`
 
 到此，nginx安装完成。
 
