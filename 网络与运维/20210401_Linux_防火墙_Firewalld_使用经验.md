@@ -41,20 +41,21 @@ Firewalld 的连接规则有三类：
 public 的默认连接规则是default，应该是reject（或者reject）待确认
 
 **使用rich rule 添加防火墙规则**
-```
+```shell
 firewall-cmd --zone=public --add-rich-rule 'rule family="ipv4" source address="172.255.92.199" accept' --permanent  //添加 permanent，表明永久有效，但需要reload
 firewall-cmd --reload   //reload 规则
 ```
 
 **查看当前规则**
-```
+
+```shell
 firewall-cmd --list-all
 ```
 
 举个例子，假设要禁用 172.253.0.0/16 网段，但允许172.253.32.21 访问。
 
 理所当然的这么调整，发现不行；调换顺序也不行。
-```
+```shell
 firewall-cmd --zone=public --add-rich-rule 'rule family="ipv4" source address="172.253.0.0/16" reject' --permanent
 firewall-cmd --zone=public --add-rich-rule 'rule family="ipv4" source address="172.253.32.21" accept' --permanent
 ```
@@ -62,7 +63,7 @@ firewall-cmd --zone=public --add-rich-rule 'rule family="ipv4" source address="1
 翻了N久的bing和百度，没找到任何说法。后来发现了NOT 语法！  
 如下这番，就可以了！！
 
-```
+```shell
 firewall-cmd --zone=public --add-rich-rule 'rule family="ipv4" source NOT address="172.253.0.0/16" accept' --permanent
 firewall-cmd --zone=public --add-rich-rule 'rule family="ipv4" source address="172.253.32.21" accept' --permanent
 ```
@@ -70,5 +71,5 @@ firewall-cmd --zone=public --add-rich-rule 'rule family="ipv4" source address="1
 PS.一些字段掩码的规则
 
 172.0.0.0/8：代表 172.0.0.1 - 172.255.255.255  
-172.23.0.0/16：代表 172.23.0.1 - 172.23.255.255  
+172.23.0.0/16：代表 172.23.0.1 - 172.23.255.255   
 172.23.15.0/24：代表 172.23.15.1 - 172.23.15.255  
