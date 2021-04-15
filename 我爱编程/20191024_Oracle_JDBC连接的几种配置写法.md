@@ -3,7 +3,7 @@
 _2019-10-24_ _20:08_
 
 今天上线项目的时候，发现Oracle的数据库连接一直有问题，报了这么一个错：
-```
+```shell
 ORA-12505, TNS:listener does not currently know of SID given in connect descriptor
 ```
 

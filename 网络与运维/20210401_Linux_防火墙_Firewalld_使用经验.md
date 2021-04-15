@@ -7,13 +7,13 @@ _2021-04-01_ _15:46_
 有些系统没有默认安装Firewalld，可以使用yum进行安装：`yum install -y firewalld`
 
 **Firewalld 状态查询**
-```
+```shell
 [root@Genl-gm-4885 ~]# firewall-cmd --state
 not running
 ```
 
 **Firewalld 启用，关闭等等命令**
-```
+```shell
 systemctl start firewalld   //启动
 systemctl stop firewalld    //停用
 systemctl enable firewalld  //设置Firewalld自启动
@@ -21,13 +21,13 @@ systemctl disable firewalld //设置Firewalld不自启动
 ```
 
 PS. 查看系统自启动服务
-```
+```shell
 systemctl list-unit-files|grep enabled
 ```
 
 Firewalld 使用了zone的一个概念，通过设置zone 可以快速设置防火墙的规则。  
 使用`firewall-cmd --get-zones` 获取zone列表
-```
+```shell
 block dmz drop external home internal public trusted work
 ```
 
