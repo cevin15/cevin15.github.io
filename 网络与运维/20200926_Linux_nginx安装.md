@@ -52,12 +52,12 @@ PCRE 作用是让 Nginx 支持 Rewrite 功能。
 ```
 4. 编译安装 
 ```shell
-[root@bogon pcre-8.35]# ./config --prefix=/usr/local/openssl
-[root@bogon pcre-8.35]# make && make install
+[root@bogon openssl-1.1.1h]# ./config --prefix=/usr/local/openssl
+[root@bogon openssl-1.1.1h]# make && make install
 ```
 5. 查看OpenSSL版本
 ```shell
-[root@bogon pcre-8.35]# openssl version
+[root@bogon openssl-1.1.1h]# openssl version
 ```
 6. 可能出现的问题
   1. 使用`openssl` 命令提示命令不存在：`openssl: command not found`

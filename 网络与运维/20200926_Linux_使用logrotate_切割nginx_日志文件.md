@@ -41,7 +41,7 @@ include /etc/logrotate.d
 
 这里的设置可以理解为Logrotate的缺省值，当然了，可以我们在「/etc/logrotate.d」目录里放置自己的配置文件，用来覆盖Logrotate的缺省值。
 
-Logrotate的演示
+**Logrotate的演示**
 
 按天保存一周的Nginx日志压缩文件，配置文件为「`/etc/logrotate.d/nginx`」：
 
