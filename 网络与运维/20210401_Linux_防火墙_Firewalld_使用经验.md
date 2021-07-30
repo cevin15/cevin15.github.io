@@ -31,14 +31,26 @@ Firewalld 使用了zone的一个概念，通过设置zone 可以快速设置防�
 block dmz drop external home internal public trusted work
 ```
 
-默认的zone 是public。
+默认的zone 是public。拒绝所有的连接请求，除了dhcp和ssh。
+
+zone=trusted 则相反，为接受所有请求。
+
+**获取当前使用的zones**
+
+```shell
+firewall-cmd --get-active-zones	
+```
+
+**切换到别的zone**
+
+```shell
+firewall-cmd --zone=trusted --change-interface=#{网卡名，如eth190}
+```
 
 Firewalld 的连接规则有三类：  
 1. drop：抛弃连接请求
 2. reject：拒绝连接请求
 3. accept：接受连接请求
-
-public 的默认连接规则是default，应该是reject（或者reject）待确认
 
 **使用rich rule 添加防火墙规则**
 ```shell
