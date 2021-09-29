@@ -17,3 +17,4 @@ ORA-12505, TNS:listener does not currently know of SID given in connect descript
 而如果是sid，则配置是这样的：`jdbc:oracle:thin:@172.253.34.154:1521:eas`
 
 更新，问题修复！
+
