@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Linux的Nginx 安装【转】#2020-09-26 09:22
+转载自 Nginx 安装配置 - 菜鸟教程
+Nginx#Nginx(&ldquo;engine x&rdquo;)是一款是由俄罗斯的程序设计师Igor Sysoev所开发高性能的 Web和 反向代理 服务器，也是一个 IMAP/POP3/SMTP 代理服务器。
+在高连接并发的情况下，Nginx是Apache服务器不错的替代品。
+Nginx 安装#一. 安装编译工具及库文件
+yum -y install make zlib zlib-devel gcc-c&#43;&#43; libtool 二. 首先要安装 PCRE
+PCRE 作用是让 Nginx 支持 Rewrite 功能。
+ 下载 PCRE 安装包，下载地址： http://downloads.sourceforge.net/project/pcre/pcre/8.35/pcre-8.35.tar.gz  [root@bogon src]# cd /usr/local/src/ [root@bogon src]# wget http://downloads.sourceforge.net/project/pcre/pcre/8.35/pcre-8.35.tar.gz 解压安装包:  [root@bogon src]# tar zxvf pcre-8.35.tar.gz 进入安装包目录  [root@bogon src]# cd pcre-8.">
+<meta name="theme-color" content="#FFFFFF">
+<meta name="color-scheme" content="light dark"><meta property="og:title" content="Linux的Nginx 安装【转】" />
+<meta property="og:description" content="Linux的Nginx 安装【转】#2020-09-26 09:22
+转载自 Nginx 安装配置 - 菜鸟教程
+Nginx#Nginx(&ldquo;engine x&rdquo;)是一款是由俄罗斯的程序设计师Igor Sysoev所开发高性能的 Web和 反向代理 服务器，也是一个 IMAP/POP3/SMTP 代理服务器。
+在高连接并发的情况下，Nginx是Apache服务器不错的替代品。
+Nginx 安装#一. 安装编译工具及库文件
+yum -y install make zlib zlib-devel gcc-c&#43;&#43; libtool 二. 首先要安装 PCRE
+PCRE 作用是让 Nginx 支持 Rewrite 功能。
+ 下载 PCRE 安装包，下载地址： http://downloads.sourceforge.net/project/pcre/pcre/8.35/pcre-8.35.tar.gz  [root@bogon src]# cd /usr/local/src/ [root@bogon src]# wget http://downloads.sourceforge.net/project/pcre/pcre/8.35/pcre-8.35.tar.gz 解压安装包:  [root@bogon src]# tar zxvf pcre-8.35.tar.gz 进入安装包目录  [root@bogon src]# cd pcre-8." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://cevin15.github.io/docs/%E7%BD%91%E7%BB%9C%E4%B8%8E%E8%BF%90%E7%BB%B4/Linux_nginx%E5%AE%89%E8%A3%85/" /><meta property="article:section" content="docs" />
+<meta property="article:published_time" content="2020-09-26T09:22:43+08:00" />
+<meta property="article:modified_time" content="2020-09-26T09:22:43+08:00" />
+
+<title>Linux的Nginx 安装【转】 | 英强的博客</title>
+<link rel="manifest" href="/manifest.json">
+<link rel="icon" href="/favicon.png" type="image/x-icon">
+<link rel="stylesheet" href="/book.min.89a77f7e702a8626749b948bbfb01109823daf6c1246ca407d1378833494c402.css" integrity="sha256-iad/fnAqhiZ0m5SLv7ARCYI9r2wSRspAfRN4gzSUxAI=" crossorigin="anonymous">
+  <script defer src="/flexsearch.min.js"></script>
+  <script defer src="/en.search.min.2f6cd6df288eebb1bee1c46d0de4a5e11125981d9166ee753637f1fdbbcb6839.js" integrity="sha256-L2zW3yiO67G&#43;4cRtDeSl4RElmB2RZu51Njfx/bvLaDk=" crossorigin="anonymous"></script>
+
+  <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><span>英强的博客</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <ul>
+    
+      
+        <li class="book-section-flat" >
+          
+  
+  
+
+  
+    <span>网络与运维</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="https://cevin15.github.io/docs/%E7%BD%91%E7%BB%9C%E4%B8%8E%E8%BF%90%E7%BB%B4/Linux_%E5%B0%8F%E6%8A%80%E5%B7%A7%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0/" class="">Linux 小技巧(持续更新)【置顶】</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="https://cevin15.github.io/docs/%E7%BD%91%E7%BB%9C%E4%B8%8E%E8%BF%90%E7%BB%B4/Linux_%E8%87%AA%E5%AE%9A%E4%B9%89%E6%9C%8D%E5%8A%A1/" class="">Linux 自定义服务</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="https://cevin15.github.io/docs/%E7%BD%91%E7%BB%9C%E4%B8%8E%E8%BF%90%E7%BB%B4/Linux_%E9%98%B2%E7%81%AB%E5%A2%99_Firewalld_%E4%BD%BF%E7%94%A8%E7%BB%8F%E9%AA%8C/" class="">Linux 防火墙 Firewalld 使用过的经验</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="https://cevin15.github.io/docs/%E7%BD%91%E7%BB%9C%E4%B8%8E%E8%BF%90%E7%BB%B4/Kubernetes_%E4%B8%8EDocker_%E4%BD%BF%E7%94%A8%E7%BB%8F%E9%AA%8C/" class="">Kubernetes 与 Docker 使用经验</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="https://cevin15.github.io/docs/%E7%BD%91%E7%BB%9C%E4%B8%8E%E8%BF%90%E7%BB%B4/Linux_%E4%BD%BF%E7%94%A8chkconfig_%E5%AE%9E%E7%8E%B0%E6%9C%8D%E5%8A%A1%E8%87%AA%E5%90%AF%E5%8A%A8/" class="">Linux 使用chkconfig 实现服务自启动</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="https://cevin15.github.io/docs/%E7%BD%91%E7%BB%9C%E4%B8%8E%E8%BF%90%E7%BB%B4/Nginx_%E6%AD%A3%E5%90%91%E4%BB%A3%E7%90%86%E8%AE%A9%E5%86%85%E7%BD%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%94%AF%E6%8C%81%E4%B8%8A%E7%BD%91/" class="">Nginx 正向代理——让内网服务器支持上网</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="https://cevin15.github.io/docs/%E7%BD%91%E7%BB%9C%E4%B8%8E%E8%BF%90%E7%BB%B4/Linux_%E9%85%8D%E7%BD%AEIPv6%E7%BD%91%E7%BB%9C/" class="">Linux 配置IPv6网络</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="https://cevin15.github.io/docs/%E7%BD%91%E7%BB%9C%E4%B8%8E%E8%BF%90%E7%BB%B4/Linux_%E4%BD%BF%E7%94%A8logrotate_%E5%88%87%E5%89%B2nginx_%E6%97%A5%E5%BF%97%E6%96%87%E4%BB%B6/" class="">Linux中使用logrotate 切割nginx 日志文件【转】</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="https://cevin15.github.io/docs/%E7%BD%91%E7%BB%9C%E4%B8%8E%E8%BF%90%E7%BB%B4/Linux_nginx%E5%AE%89%E8%A3%85/" class=" active">Linux的Nginx 安装【转】</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="https://cevin15.github.io/docs/%E7%BD%91%E7%BB%9C%E4%B8%8E%E8%BF%90%E7%BB%B4/Linux%E7%9A%84%E8%99%9A%E6%8B%9FIP%E8%AE%BE%E7%BD%AE/" class="">Linux的虚拟IP设置</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="https://cevin15.github.io/docs/%E7%BD%91%E7%BB%9C%E4%B8%8E%E8%BF%90%E7%BB%B4/%E8%AE%B0%E4%B8%80%E6%AC%A1%E8%A7%A3%E5%86%B3Telnet%E4%B8%8D%E9%80%9A%E9%97%AE%E9%A2%98%E7%9A%84%E7%BB%8F%E8%BF%87/" class="">记一次解决“Telnet不通”问题的经过</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="https://cevin15.github.io/docs/%E7%BD%91%E7%BB%9C%E4%B8%8E%E8%BF%90%E7%BB%B4/Linux_%E4%BF%AE%E6%94%B9DNS_%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%85%8D%E7%BD%AE/" class="">Linux 修改DNS 服务器配置</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="https://cevin15.github.io/docs/%E7%BD%91%E7%BB%9C%E4%B8%8E%E8%BF%90%E7%BB%B4/CentOS_7.x_%E6%89%A9%E5%AE%B9/" class="">CentOS 7.x 扩容</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li class="book-section-flat" >
+          
+  
+  
+
+  
+    <span>我爱编程</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="https://cevin15.github.io/docs/%E6%88%91%E7%88%B1%E7%BC%96%E7%A8%8B/VSCode_%E7%A6%BB%E7%BA%BF%E5%AE%89%E8%A3%85%E6%8F%92%E4%BB%B6/" class="">VSCode 离线安装插件</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="https://cevin15.github.io/docs/%E6%88%91%E7%88%B1%E7%BC%96%E7%A8%8B/Oracle_JDBC%E8%BF%9E%E6%8E%A5%E7%9A%84%E5%87%A0%E7%A7%8D%E9%85%8D%E7%BD%AE%E5%86%99%E6%B3%95/" class="">Linux的虚拟IP设置</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="https://cevin15.github.io/docs/%E6%88%91%E7%88%B1%E7%BC%96%E7%A8%8B/OAuth_2.0_%E6%B5%85%E6%9E%90/" class="">Oauth 2.0 浅析</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var a=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(b){localStorage.setItem("menu.scrollTop",a.scrollTop)}),a.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>Linux的Nginx 安装【转】</strong>
+
+  <label for="toc-control">
+    
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#linux的nginx-安装转">Linux的Nginx 安装【转】</a>
+      <ul>
+        <li><a href="#nginx">Nginx</a></li>
+        <li><a href="#nginx-安装">Nginx 安装</a></li>
+        <li><a href="#nginx-配置">Nginx 配置</a></li>
+        <li><a href="#启动-nginx">启动 Nginx</a></li>
+        <li><a href="#nginx-其他命令">Nginx 其他命令</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><h1 id="linux的nginx-安装转">
+  Linux的Nginx 安装【转】
+  <a class="anchor" href="#linux%e7%9a%84nginx-%e5%ae%89%e8%a3%85%e8%bd%ac">#</a>
+</h1>
+<p><em>2020-09-26</em> <em>09:22</em></p>
+<p>转载自 
+  <a href="https://www.runoob.com/linux/nginx-install-setup.html">Nginx 安装配置 - 菜鸟教程</a></p>
+<h2 id="nginx">
+  Nginx
+  <a class="anchor" href="#nginx">#</a>
+</h2>
+<p>Nginx(&ldquo;engine x&rdquo;)是一款是由俄罗斯的程序设计师Igor Sysoev所开发高性能的 Web和 反向代理 服务器，也是一个 IMAP/POP3/SMTP 代理服务器。</p>
+<p>在高连接并发的情况下，Nginx是Apache服务器不错的替代品。</p>
+<h2 id="nginx-安装">
+  Nginx 安装
+  <a class="anchor" href="#nginx-%e5%ae%89%e8%a3%85">#</a>
+</h2>
+<p>一. 安装编译工具及库文件</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">yum -y install make zlib zlib-devel gcc-c++ libtool
+</code></pre></div><p>二. 首先要安装 PCRE<br>
+PCRE 作用是让 Nginx 支持 Rewrite 功能。</p>
+<ol>
+<li>下载 PCRE 安装包，下载地址： 
+  <a href="http://downloads.sourceforge.net/project/pcre/pcre/8.35/pcre-8.35.tar.gz">http://downloads.sourceforge.net/project/pcre/pcre/8.35/pcre-8.35.tar.gz</a></li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>root@bogon src<span style="color:#f92672">]</span><span style="color:#75715e"># cd /usr/local/src/</span>
+<span style="color:#f92672">[</span>root@bogon src<span style="color:#f92672">]</span><span style="color:#75715e"># wget http://downloads.sourceforge.net/project/pcre/pcre/8.35/pcre-8.35.tar.gz</span>
+</code></pre></div><ol start="2">
+<li>解压安装包:</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>root@bogon src<span style="color:#f92672">]</span><span style="color:#75715e"># tar zxvf pcre-8.35.tar.gz</span>
+</code></pre></div><ol start="3">
+<li>进入安装包目录</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>root@bogon src<span style="color:#f92672">]</span><span style="color:#75715e"># cd pcre-8.35</span>
+</code></pre></div><ol start="4">
+<li>编译安装</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>root@bogon pcre-8.35<span style="color:#f92672">]</span><span style="color:#75715e"># ./configure</span>
+<span style="color:#f92672">[</span>root@bogon pcre-8.35<span style="color:#f92672">]</span><span style="color:#75715e"># make &amp;&amp; make install</span>
+</code></pre></div><ol start="5">
+<li>查看pcre版本</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>root@bogon pcre-8.35<span style="color:#f92672">]</span><span style="color:#75715e"># pcre-config --version</span>
+</code></pre></div><p>三. 安装OpenSSL</p>
+<ol>
+<li>下载OpenSSL 安装包，下载地址：
+  <a href="https://www.openssl.org/source/openssl-1.1.1h.tar.gz">https://www.openssl.org/source/openssl-1.1.1h.tar.gz</a></li>
+<li>解压安装包:</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>root@bogon src<span style="color:#f92672">]</span><span style="color:#75715e"># tar -zxvf openssl-1.1.1h.tar.gz</span>
+</code></pre></div><ol start="3">
+<li>进入安装包目录</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>root@bogon src<span style="color:#f92672">]</span><span style="color:#75715e"># cd openssl-1.1.1h</span>
+</code></pre></div><ol start="4">
+<li>编译安装</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>root@bogon openssl-1.1.1h<span style="color:#f92672">]</span><span style="color:#75715e"># ./config --prefix=/usr/local/openssl</span>
+<span style="color:#f92672">[</span>root@bogon openssl-1.1.1h<span style="color:#f92672">]</span><span style="color:#75715e"># make &amp;&amp; make install</span>
+</code></pre></div><ol start="5">
+<li>查看OpenSSL版本</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>root@bogon openssl-1.1.1h<span style="color:#f92672">]</span><span style="color:#75715e"># openssl version</span>
+</code></pre></div><ol start="6">
+<li>可能出现的问题</li>
+<li>使用<code>openssl</code> 命令提示命令不存在：<code>openssl: command not found</code></li>
+</ol>
+<pre><code>解决方式：增加openssl的命令软连接，`ln -s /usr/local/openssl/bin/openssl /usr/bin/openssl`
+</code></pre>
+<ol start="2">
+<li>使用<code>openssl</code> 命令报错：<code>error while loading shared libraries: libssl.so.1.1: cannot open shared object file: No such file or directory</code></li>
+</ol>
+<pre><code>解决方式：
+```shell
+echo &quot;/usr/local/openssl/lib&quot; &gt;&gt; /etc/ld.so.conf
+ldconfig
+```
+</code></pre>
+<p>四. 安装 Nginx</p>
+<ol>
+<li>下载 Nginx，下载地址：
+  <a href="http://nginx.org/download/nginx-1.6.2.tar.gz">http://nginx.org/download/nginx-1.6.2.tar.gz</a></li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>root@bogon src<span style="color:#f92672">]</span><span style="color:#75715e"># cd /usr/local/src/</span>
+<span style="color:#f92672">[</span>root@bogon src<span style="color:#f92672">]</span><span style="color:#75715e"># wget http://nginx.org/download/nginx-1.6.2.tar.gz</span>
+</code></pre></div><ol start="2">
+<li>解压安装包</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>root@bogon src<span style="color:#f92672">]</span><span style="color:#75715e"># tar zxvf nginx-1.6.2.tar.gz</span>
+</code></pre></div><ol start="3">
+<li>进入安装包目录</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>root@bogon src<span style="color:#f92672">]</span><span style="color:#75715e"># cd nginx-1.6.2</span>
+</code></pre></div><ol start="4">
+<li>编译安装</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>root@bogon nginx-1.6.2<span style="color:#f92672">]</span><span style="color:#75715e"># ./configure --prefix=/usr/local/webserver/nginx --with-http_stub_status_module --with-http_ssl_module --with-pcre=/usr/local/src/pcre-8.35 --with-openssl=/usr/local/openssl</span>
+<span style="color:#f92672">[</span>root@bogon nginx-1.6.2<span style="color:#f92672">]</span><span style="color:#75715e"># make</span>
+<span style="color:#f92672">[</span>root@bogon nginx-1.6.2<span style="color:#f92672">]</span><span style="color:#75715e"># make install</span>
+</code></pre></div><ol start="5">
+<li>查看nginx版本</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>root@bogon nginx-1.6.2<span style="color:#f92672">]</span><span style="color:#75715e"># /usr/local/webserver/nginx/sbin/nginx -v</span>
+</code></pre></div><ol start="6">
+<li>可能出现的问题</li>
+<li>make 的时候出现</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">/bin/sh: line 2: ./config: No such file or directory
+make<span style="color:#f92672">[</span>1<span style="color:#f92672">]</span>: *** <span style="color:#f92672">[</span>/usr/local/openssl/.openssl/include/openssl/ssl.h<span style="color:#f92672">]</span> Error <span style="color:#ae81ff">127</span>
+make<span style="color:#f92672">[</span>1<span style="color:#f92672">]</span>: Leaving directory <span style="color:#e6db74">`</span>/usr/local/src/nginx-1.18.0<span style="color:#960050;background-color:#1e0010">&#39;</span>
+make: *** <span style="color:#f92672">[</span>build<span style="color:#f92672">]</span> Error <span style="color:#ae81ff">2</span>
+</code></pre></div><p>路径错误导致。我们调整下nginx中openssl的配置<code>/usr/local/src/nginx-1.18.0/auto/lib/openssl/conf</code>，查找到如下配置</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">CORE_INCS<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$CORE_INCS<span style="color:#e6db74"> </span>$OPENSSL<span style="color:#e6db74">/.openssl/include&#34;</span>
+CORE_DEPS<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$CORE_DEPS<span style="color:#e6db74"> </span>$OPENSSL<span style="color:#e6db74">/.openssl/include/openssl/ssl.h&#34;</span>
+CORE_LIBS<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$CORE_LIBS<span style="color:#e6db74"> </span>$OPENSSL<span style="color:#e6db74">/.openssl/lib/libssl.a&#34;</span>
+CORE_LIBS<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$CORE_LIBS<span style="color:#e6db74"> </span>$OPENSSL<span style="color:#e6db74">/.openssl/lib/libcrypto.a&#34;</span>
+</code></pre></div><p>调整为</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">CORE_INCS<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$CORE_INCS<span style="color:#e6db74"> </span>$OPENSSL<span style="color:#e6db74">/include&#34;</span>
+CORE_DEPS<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$CORE_DEPS<span style="color:#e6db74"> </span>$OPENSSL<span style="color:#e6db74">/include/openssl/ssl.h&#34;</span>
+CORE_LIBS<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$CORE_LIBS<span style="color:#e6db74"> </span>$OPENSSL<span style="color:#e6db74">/lib/libssl.a&#34;</span>
+CORE_LIBS<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$CORE_LIBS<span style="color:#e6db74"> </span>$OPENSSL<span style="color:#e6db74">/lib/libcrypto.a&#34;</span>
+</code></pre></div><p>即删除<code>.openssl/</code></p>
+<p>到此，nginx安装完成。</p>
+<h2 id="nginx-配置">
+  Nginx 配置
+  <a class="anchor" href="#nginx-%e9%85%8d%e7%bd%ae">#</a>
+</h2>
+<p>创建 Nginx 运行使用的用户 www：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>root@bogon conf<span style="color:#f92672">]</span><span style="color:#75715e"># /usr/sbin/groupadd www </span>
+<span style="color:#f92672">[</span>root@bogon conf<span style="color:#f92672">]</span><span style="color:#75715e"># /usr/sbin/useradd -g www www</span>
+</code></pre></div><p>配置nginx.conf ，将/usr/local/webserver/nginx/conf/nginx.conf替换为以下内容</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>root@bogon conf<span style="color:#f92672">]</span><span style="color:#75715e">#  cat /usr/local/webserver/nginx/conf/nginx.conf</span>
+
+user www www;
+worker_processes 2; <span style="color:#75715e">#设置值和CPU核心数一致</span>
+error_log /usr/local/webserver/nginx/logs/nginx_error.log crit; <span style="color:#75715e">#日志位置和日志级别</span>
+pid /usr/local/webserver/nginx/nginx.pid;
+<span style="color:#75715e">#Specifies the value for maximum file descriptors that can be opened by this process.</span>
+worker_rlimit_nofile 65535;
+events
+<span style="color:#f92672">{</span>
+  use epoll;
+  worker_connections 65535;
+<span style="color:#f92672">}</span>
+http
+<span style="color:#f92672">{</span>
+  include mime.types;
+  default_type application/octet-stream;
+  log_format main  <span style="color:#e6db74">&#39;$remote_addr - $remote_user [$time_local] &#34;$request&#34; &#39;</span>
+               <span style="color:#e6db74">&#39;$status $body_bytes_sent &#34;$http_referer&#34; &#39;</span>
+               <span style="color:#e6db74">&#39;&#34;$http_user_agent&#34; $http_x_forwarded_for&#39;</span>;
+  
+<span style="color:#75715e">#charset gb2312;</span>
+     
+  server_names_hash_bucket_size 128;
+  client_header_buffer_size 32k;
+  large_client_header_buffers <span style="color:#ae81ff">4</span> 32k;
+  client_max_body_size 8m;
+     
+  sendfile on;
+  tcp_nopush on;
+  keepalive_timeout 60;
+  tcp_nodelay on;
+  fastcgi_connect_timeout 300;
+  fastcgi_send_timeout 300;
+  fastcgi_read_timeout 300;
+  fastcgi_buffer_size 64k;
+  fastcgi_buffers <span style="color:#ae81ff">4</span> 64k;
+  fastcgi_busy_buffers_size 128k;
+  fastcgi_temp_file_write_size 128k;
+  gzip on; 
+  gzip_min_length 1k;
+  gzip_buffers <span style="color:#ae81ff">4</span> 16k;
+  gzip_http_version 1.0;
+  gzip_comp_level 2;
+  gzip_types text/plain application/x-javascript text/css application/xml;
+  gzip_vary on;
+ 
+  <span style="color:#75715e">#limit_zone crawler $binary_remote_addr 10m;</span>
+ <span style="color:#75715e">#下面是server虚拟主机的配置</span>
+ server
+  <span style="color:#f92672">{</span>
+    listen 80;<span style="color:#75715e">#监听端口</span>
+    server_name localhost;<span style="color:#75715e">#域名</span>
+    index index.html index.htm index.php;
+    root /usr/local/webserver/nginx/html;<span style="color:#75715e">#站点目录</span>
+      location ~ .*<span style="color:#ae81ff">\.</span><span style="color:#f92672">(</span>php|php5<span style="color:#f92672">)</span>?$
+    <span style="color:#f92672">{</span>
+      <span style="color:#75715e">#fastcgi_pass unix:/tmp/php-cgi.sock;</span>
+      fastcgi_pass 127.0.0.1:9000;
+      fastcgi_index index.php;
+      include fastcgi.conf;
+    <span style="color:#f92672">}</span>
+    location ~ .*<span style="color:#ae81ff">\.</span><span style="color:#f92672">(</span>gif|jpg|jpeg|png|bmp|swf|ico<span style="color:#f92672">)</span>$
+    <span style="color:#f92672">{</span>
+      expires 30d;
+  <span style="color:#75715e"># access_log off;</span>
+    <span style="color:#f92672">}</span>
+    location ~ .*<span style="color:#ae81ff">\.</span><span style="color:#f92672">(</span>js|css<span style="color:#f92672">)</span>?$
+    <span style="color:#f92672">{</span>
+      expires 15d;
+   <span style="color:#75715e"># access_log off;</span>
+    <span style="color:#f92672">}</span>
+    access_log off;
+  <span style="color:#f92672">}</span>
+
+<span style="color:#f92672">}</span>
+</code></pre></div><p>检查配置文件nginx.conf的正确性命令：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>root@bogon conf<span style="color:#f92672">]</span><span style="color:#75715e"># /usr/local/webserver/nginx/sbin/nginx -t</span>
+</code></pre></div><h2 id="启动-nginx">
+  启动 Nginx
+  <a class="anchor" href="#%e5%90%af%e5%8a%a8-nginx">#</a>
+</h2>
+<p>Nginx 启动命令如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#f92672">[</span>root@bogon conf<span style="color:#f92672">]</span><span style="color:#75715e"># /usr/local/webserver/nginx/sbin/nginx</span>
+</code></pre></div><p>访问站点<br>
+从浏览器访问我们配置的站点ip：</p>
+<h2 id="nginx-其他命令">
+  Nginx 其他命令
+  <a class="anchor" href="#nginx-%e5%85%b6%e4%bb%96%e5%91%bd%e4%bb%a4">#</a>
+</h2>
+<p>以下包含了 Nginx 常用的几个命令：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">/usr/local/webserver/nginx/sbin/nginx -s reload            <span style="color:#75715e"># 重新载入配置文件  </span>
+/usr/local/webserver/nginx/sbin/nginx -s reopen            <span style="color:#75715e"># 重启 Nginx  </span>
+/usr/local/webserver/nginx/sbin/nginx -s stop              <span style="color:#75715e"># 停止 Nginx</span>
+</code></pre></div></article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+
+</div>
+
+
+
+  <script>(function(){function a(c){const a=window.getSelection(),b=document.createRange();b.selectNodeContents(c),a.removeAllRanges(),a.addRange(b)}document.querySelectorAll("pre code").forEach(b=>{b.addEventListener("click",function(c){a(b.parentElement),navigator.clipboard&&navigator.clipboard.writeText(b.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#linux的nginx-安装转">Linux的Nginx 安装【转】</a>
+      <ul>
+        <li><a href="#nginx">Nginx</a></li>
+        <li><a href="#nginx-安装">Nginx 安装</a></li>
+        <li><a href="#nginx-配置">Nginx 配置</a></li>
+        <li><a href="#启动-nginx">启动 Nginx</a></li>
+        <li><a href="#nginx-其他命令">Nginx 其他命令</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
