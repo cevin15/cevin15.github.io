@@ -81,17 +81,12 @@ kubectl create secret docker-registry ${secret名} --docker-server=${私有仓�
       
       <guid>https://cevin15.github.io/docs/%E7%BD%91%E7%BB%9C%E4%B8%8E%E8%BF%90%E7%BB%B4/Linux_%E4%BD%BF%E7%94%A8chkconfig_%E5%AE%9E%E7%8E%B0%E6%9C%8D%E5%8A%A1%E8%87%AA%E5%90%AF%E5%8A%A8/</guid>
       <description>Linux 使用chkconfig 实现服务自启动#2021-06-15 15:44
-查看服务
-chkconfig --list 自定义服务
-在/etc/init.d/目录下，添加自定义的脚本文件。
+查看服务#chkconfig --list 自定义服务#在/etc/init.d/目录下，添加自定义的脚本文件。
 脚本文件有个要注意的地方，需要在文件开头定义如下内容。如果没有，可能会报这个错误：service ${service_name} does not support chkconfig
 # chkconfig: 2345 91 89 # description: ${service_name} 第一行表示 chkconfig的规则，2345 启动级别，91 启动优先级，89 关闭优先级（优先级 0-100，值越高优先级越低）
 举个例子子，如下为笔者配置的elasticsearch 自启脚本。P.S. 这里使用es 用户来启动elasticsearch。
 #! /bin/bash # elasticsearch # chkconfig: 2345 91 89 # description: elasticsearch su - es -c &amp;#34;source /etc/profile &amp;amp;&amp;amp; /usr/es/elasticsearch-6.5.4/bin/elasticsearch -d&amp;#34; 最后，给这个脚本添加执行权限：chmod +x elasticsearch
-添加服务
-chkconfig --add ${service_name}	如果如上已经配置了2345的启动级别，则默认添加之后就设置了自启动。
-关闭服务自启动
-chkconfig ${service_name} off 默认level 是2345，可以使用--level 指定level</description>
+添加服务#chkconfig --add ${service_name}	如果如上已经配置了2345的启动级别，则默认添加之后就设置了自启动。</description>
     </item>
     
     <item>
