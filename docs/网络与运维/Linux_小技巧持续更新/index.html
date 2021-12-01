@@ -29,7 +29,7 @@ cat test.tar.gz.* &gt; test_new.tar.gz 删除find 出来的文件" />
 <link rel="icon" href="/favicon.png" type="image/x-icon">
 <link rel="stylesheet" href="/book.min.46181bc93375ba932026e753b37c40e6ff8bb16a9ef770c78bcc663e4577b1ba.css" integrity="sha256-RhgbyTN1upMgJudTs3xA5v&#43;LsWqe93DHi8xmPkV3sbo=" crossorigin="anonymous">
   <script defer src="/flexsearch.min.js"></script>
-  <script defer src="/en.search.min.4d04151da6956c1ee55ad7b5627304fb18924537b91c303698bb8a46e5ce29a8.js" integrity="sha256-TQQVHaaVbB7lWte1YnME&#43;xiSRTe5HDA2mLuKRuXOKag=" crossorigin="anonymous"></script>
+  <script defer src="/en.search.min.b5b349c285b3d963e8f0f04a94073e58e58dce2e2e1be12dc7923b646e9e9731.js" integrity="sha256-tbNJwoWz2WPo8PBKlAc&#43;WOWNzi4uG&#43;Etx5I7ZG6elzE=" crossorigin="anonymous"></script>
 
   <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
 <!--
@@ -446,6 +446,11 @@ https://github.com/alex-shpak/hugo-book
 <p>开通nfs 服务常用的2049，111端口之后，还是超时。还有端口没开通？这时用netstat 可以确认哪个端口正在使用</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">netstat -an |grep <span style="color:#f92672">{</span>nfs服务ip<span style="color:#f92672">}</span>
 </code></pre></div><p>所以，以后遇到有啥服务访问不通时，可以用上述命令检查是何端口导致。</p>
+</li>
+<li>
+<p>允许非root 用户使用1024以下的端口号</p>
+<p>即时生效：<code>sysctl net.ipv4.ip_unprivileged_port_start=0</code></p>
+<p>重启生效：<code>echo &quot;net.ipv4.ip_unprivileged_port_start=0&quot; &gt;&gt; /etc/sysctl.conf</code></p>
 </li>
 </ol>
 </article>
