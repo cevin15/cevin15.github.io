@@ -5,7 +5,7 @@
     <link>https://cevin15.github.io/docs/%E7%BD%91%E7%BB%9C%E4%B8%8E%E8%BF%90%E7%BB%B4/</link>
     <description>Recent content in 网络与运维 on 英强的博客</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Wed, 29 Sep 2021 13:43:43 +0800</lastBuildDate><atom:link href="https://cevin15.github.io/docs/%E7%BD%91%E7%BB%9C%E4%B8%8E%E8%BF%90%E7%BB%B4/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 01 Dec 2021 20:05:43 +0800</lastBuildDate><atom:link href="https://cevin15.github.io/docs/%E7%BD%91%E7%BB%9C%E4%B8%8E%E8%BF%90%E7%BB%B4/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Linux 小技巧(持续更新)【置顶】</title>
       <link>https://cevin15.github.io/docs/%E7%BD%91%E7%BB%9C%E4%B8%8E%E8%BF%90%E7%BB%B4/Linux_%E5%B0%8F%E6%8A%80%E5%B7%A7%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0/</link>
@@ -22,20 +22,16 @@ cat test.tar.gz.* &amp;gt; test_new.tar.gz 删除find 出来的文件</descript
     </item>
     
     <item>
-      <title>Linux 自定义服务</title>
-      <link>https://cevin15.github.io/docs/%E7%BD%91%E7%BB%9C%E4%B8%8E%E8%BF%90%E7%BB%B4/Linux_%E8%87%AA%E5%AE%9A%E4%B9%89%E6%9C%8D%E5%8A%A1/</link>
-      <pubDate>Tue, 08 Jun 2021 00:18:43 +0800</pubDate>
+      <title>使用Keepalived 实现Nginx 双机热备</title>
+      <link>https://cevin15.github.io/docs/%E7%BD%91%E7%BB%9C%E4%B8%8E%E8%BF%90%E7%BB%B4/%E4%BD%BF%E7%94%A8_Keepalived_%E5%AE%9E%E7%8E%B0_Nginx_%E5%8F%8C%E6%9C%BA%E7%83%AD%E5%A4%87/</link>
+      <pubDate>Wed, 01 Dec 2021 20:05:43 +0800</pubDate>
       
-      <guid>https://cevin15.github.io/docs/%E7%BD%91%E7%BB%9C%E4%B8%8E%E8%BF%90%E7%BB%B4/Linux_%E8%87%AA%E5%AE%9A%E4%B9%89%E6%9C%8D%E5%8A%A1/</guid>
-      <description>Linux 自定义服务#2021-06-08 00:18
-晚上抽空学了下在Linux 服务器中自定义service，自定义之后，启动、停止、开机自启动等操作就简单多了。
-我们以tomcat 作为我们的例子，目标是将tomcat 自定义为service，并实现开机自启动。
-准备工作# 系统版本 CentOS 7.x 配置好JDK，下载Tomcat，并找个目录解压 执行下Tomcat bin目录下的startup.sh，shutdow.sh 命令，确认环境是否正确  Show Time#首先，在目录/usr/lib/systemd/system 中创建一个service文 件：tomcat.service，内容如下：
-[Unit] Description=apache tomcat service [Service] Type=simple ExecStart=/usr/local/tomcat/apache-tomcat-10.0.6/bin/auto_startup.sh ExecStop=/usr/local/tomcat/apache-tomcat-10.0.6/bin/auto_shutdown.sh RemainAfterExit=yes [Install] WantedBy=multi-user.target Service 文件中各个节点的含义就不深入讲了（笔者也还只是懂些皮毛），说下两点要注意的。
-  没有直接使用Tomcat bin目录下的startup.sh，shutdow.sh 命令，因为会提示JAVA_HOME，JRE_HOME 找不到，所以自定义了两个sh文件，内容如下：
-#!/bin/sh source /etc/profile /usr/local/tomcat/apache-tomcat-10.0.6/bin/startup.sh #!/bin/sh source /etc/profile /usr/local/tomcat/apache-tomcat-10.0.6/bin/shutdown.sh 增加了source /etc/profile，先加载了Java的环境变量。
-某些时候，还会提示配置文件找不到（如果类中有根据相对路径来查找文件的代码的话），导致Tomcat 启动失败。那我们可以这样来写启动脚本：
-#!/bin/sh source /etc/profile cd /usr/local/tomcat/apache-tomcat-10.0.6/bin ./startup.sh   注意RemainAfterExit=yes，未增加该配置之前，执行systemctl start tomcat.</description>
+      <guid>https://cevin15.github.io/docs/%E7%BD%91%E7%BB%9C%E4%B8%8E%E8%BF%90%E7%BB%B4/%E4%BD%BF%E7%94%A8_Keepalived_%E5%AE%9E%E7%8E%B0_Nginx_%E5%8F%8C%E6%9C%BA%E7%83%AD%E5%A4%87/</guid>
+      <description>使用Keepalived 实现Nginx 双机热备#2021-12-01 20:05
+Nginx 安装#首先准备两台服务器，上面均部署Nginx。
+参考这里Linux 的 Nginx 安装【转】
+Keepalived 安装#yum install -y keepalived Keepalived 配置#简单模式#目录 /etc/keepalived/keepalived.conf
+! Configuration File for keepalived global_defs { #路由id，全局唯一，表示当前keepalived节点的唯一性 router_id keep_15 } vrrp_instance VI_1 { #设置当前实例状态为MASTER。MASTER代表是主实例，BACKUP代表是备用实例 state BACKUP #当前实例绑定的网卡 interface eth0 #当前实例的虚拟路由id，一组主备的实例的路由id是相同的 virtual_router_id 101 #当前实例的优先级 priority 100 #主备之间同步检查时间间隔 advert_int 1 #一组主备实例的认证密码，方式非法节点进入路由组 authentication { auth_type PASS auth_pass 123456Qw } #设置当前实例的虚拟IP virtual_ipaddress { 192.</description>
     </item>
     
     <item>
@@ -90,6 +86,23 @@ kubectl create secret docker-registry ${secret名} --docker-server=${私有仓�
     </item>
     
     <item>
+      <title>Linux 自定义服务</title>
+      <link>https://cevin15.github.io/docs/%E7%BD%91%E7%BB%9C%E4%B8%8E%E8%BF%90%E7%BB%B4/Linux_%E8%87%AA%E5%AE%9A%E4%B9%89%E6%9C%8D%E5%8A%A1/</link>
+      <pubDate>Tue, 08 Jun 2021 00:18:43 +0800</pubDate>
+      
+      <guid>https://cevin15.github.io/docs/%E7%BD%91%E7%BB%9C%E4%B8%8E%E8%BF%90%E7%BB%B4/Linux_%E8%87%AA%E5%AE%9A%E4%B9%89%E6%9C%8D%E5%8A%A1/</guid>
+      <description>Linux 自定义服务#2021-06-08 00:18
+晚上抽空学了下在Linux 服务器中自定义service，自定义之后，启动、停止、开机自启动等操作就简单多了。
+我们以tomcat 作为我们的例子，目标是将tomcat 自定义为service，并实现开机自启动。
+准备工作# 系统版本 CentOS 7.x 配置好JDK，下载Tomcat，并找个目录解压 执行下Tomcat bin目录下的startup.sh，shutdow.sh 命令，确认环境是否正确  Show Time#首先，在目录/usr/lib/systemd/system 中创建一个service文 件：tomcat.service，内容如下：
+[Unit] Description=apache tomcat service [Service] Type=simple ExecStart=/usr/local/tomcat/apache-tomcat-10.0.6/bin/auto_startup.sh ExecStop=/usr/local/tomcat/apache-tomcat-10.0.6/bin/auto_shutdown.sh RemainAfterExit=yes [Install] WantedBy=multi-user.target Service 文件中各个节点的含义就不深入讲了（笔者也还只是懂些皮毛），说下两点要注意的。
+  没有直接使用Tomcat bin目录下的startup.sh，shutdow.sh 命令，因为会提示JAVA_HOME，JRE_HOME 找不到，所以自定义了两个sh文件，内容如下：
+#!/bin/sh source /etc/profile /usr/local/tomcat/apache-tomcat-10.0.6/bin/startup.sh #!/bin/sh source /etc/profile /usr/local/tomcat/apache-tomcat-10.0.6/bin/shutdown.sh 增加了source /etc/profile，先加载了Java的环境变量。
+某些时候，还会提示配置文件找不到（如果类中有根据相对路径来查找文件的代码的话），导致Tomcat 启动失败。那我们可以这样来写启动脚本：
+#!/bin/sh source /etc/profile cd /usr/local/tomcat/apache-tomcat-10.0.6/bin ./startup.sh   注意RemainAfterExit=yes，未增加该配置之前，执行systemctl start tomcat.</description>
+    </item>
+    
+    <item>
       <title>Nginx 正向代理——让内网服务器支持上网</title>
       <link>https://cevin15.github.io/docs/%E7%BD%91%E7%BB%9C%E4%B8%8E%E8%BF%90%E7%BB%B4/Nginx_%E6%AD%A3%E5%90%91%E4%BB%A3%E7%90%86%E8%AE%A9%E5%86%85%E7%BD%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%94%AF%E6%8C%81%E4%B8%8A%E7%BD%91/</link>
       <pubDate>Tue, 15 Dec 2020 17:44:43 +0800</pubDate>
@@ -132,10 +145,10 @@ Logrotate的介绍#显而易见，Logrotate是基于CRON来运行的，其脚
     
     <item>
       <title>Linux的Nginx 安装【转】</title>
-      <link>https://cevin15.github.io/docs/%E7%BD%91%E7%BB%9C%E4%B8%8E%E8%BF%90%E7%BB%B4/Linux_nginx%E5%AE%89%E8%A3%85/</link>
+      <link>https://cevin15.github.io/docs/%E7%BD%91%E7%BB%9C%E4%B8%8E%E8%BF%90%E7%BB%B4/Linux_Nginx%E5%AE%89%E8%A3%85/</link>
       <pubDate>Sat, 26 Sep 2020 09:22:43 +0800</pubDate>
       
-      <guid>https://cevin15.github.io/docs/%E7%BD%91%E7%BB%9C%E4%B8%8E%E8%BF%90%E7%BB%B4/Linux_nginx%E5%AE%89%E8%A3%85/</guid>
+      <guid>https://cevin15.github.io/docs/%E7%BD%91%E7%BB%9C%E4%B8%8E%E8%BF%90%E7%BB%B4/Linux_Nginx%E5%AE%89%E8%A3%85/</guid>
       <description>Linux的Nginx 安装【转】#2020-09-26 09:22
 转载自 Nginx 安装配置 - 菜鸟教程
 Nginx#Nginx(&amp;ldquo;engine x&amp;rdquo;)是一款是由俄罗斯的程序设计师Igor Sysoev所开发高性能的 Web和 反向代理 服务器，也是一个 IMAP/POP3/SMTP 代理服务器。
