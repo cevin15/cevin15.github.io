@@ -5,7 +5,7 @@
     <link>https://cevin15.github.io/</link>
     <description>Recent content in 你好，我是英强 on 英强的博客</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Wed, 01 Dec 2021 20:05:43 +0800</lastBuildDate><atom:link href="https://cevin15.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 01 Jan 2022 08:57:43 +0800</lastBuildDate><atom:link href="https://cevin15.github.io/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Linux 小技巧(持续更新)【置顶】</title>
       <link>https://cevin15.github.io/docs/%E7%BD%91%E7%BB%9C%E4%B8%8E%E8%BF%90%E7%BB%B4/Linux_%E5%B0%8F%E6%8A%80%E5%B7%A7%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0/</link>
@@ -19,6 +19,21 @@
 split -b 40M -d -a 2 test.tar.gz test.tar.gz. 参数含义： -b：指定每个文件的大小，单位可以为B、K、M ； -d：使用数字而不是字母作为后缀名 ； -a：后缀名长度，默认为2；
  ​	合并
 cat test.tar.gz.* &amp;gt; test_new.tar.gz 删除find 出来的文件</description>
+    </item>
+    
+    <item>
+      <title>使用 SpringCloud Config 作为配置中心</title>
+      <link>https://cevin15.github.io/docs/%E6%88%91%E7%88%B1%E7%BC%96%E7%A8%8B/%E4%BD%BF%E7%94%A8_SpringCloud_Config_%E4%BD%9C%E4%B8%BA%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83/</link>
+      <pubDate>Sat, 01 Jan 2022 08:57:43 +0800</pubDate>
+      
+      <guid>https://cevin15.github.io/docs/%E6%88%91%E7%88%B1%E7%BC%96%E7%A8%8B/%E4%BD%BF%E7%94%A8_SpringCloud_Config_%E4%BD%9C%E4%B8%BA%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83/</guid>
+      <description>使用 SpringCloud Config 作为配置中心#一开始调研的是阿里的Nacos，花了些时间装上服务端，增加一个配置文件。客户端要调用的时候，启动怎么都是失败，提示某个类未找到。搜索后，在官方仓库的issue上，发现不止笔者一个人遇到这个问题升级Spring 2.4.1 ConfigurationBeanFactoryMetadata 找不到。好家伙，一年多了，这issue还挂着。SpringBoot 都2.6版本了，2.4版本居然还不支持。好像有人说，阿里的开源项目都是kpi项目？放弃。
+后面又稍微看了下Apollo，是携程的。但始终不放心，这要是也用着用着，就流产了，那咋搞？要不，还是用回官方的SpringCloud Config 吧。
+老实说，SpringCloud Config 的官方文档也实在是不清晰。好在网上文章不少。结合实践，几个小时下来算是把项目搭建起来了。
+Config Server#创建一个普通的SpringBoot 项目。 如果使用默认的Git 作为Config Server 的存储方式，那只需要一个依赖即可。
+&amp;lt;dependencies&amp;gt; &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.springframework.cloud&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;spring-cloud-config-server&amp;lt;/artifactId&amp;gt; &amp;lt;/dependency&amp;gt; &amp;lt;/dependencies&amp;gt; 项目配置，application.yaml
+server: port: 8001 spring: application: name: configServer cloud: config: server: git: ## 此处配置Git 仓库地址；如果是私有仓库，需要配置账号密码 uri: https://gitee.com/cevin15/config.git username: xxx password: xxx 项目启动类，ConfigerApplication.java
+@EnableConfigServer @SpringBootApplication public class ConfigServerApplication { public static void main(String[] args) { SpringApplication.run(ConfigServerApplication.class, args); } } 在Git 仓库中上传一个配置文件configClient-test.</description>
     </item>
     
     <item>
@@ -247,15 +262,6 @@ CentOS 增加磁盘之后，还需要对空间进行扩容。
 # fdisk -l可以看到这么一个数据，说明现在挂载了一个53.7 GB的磁盘没用上。
 Disk /dev/sdb: 53.7 GB, 53687091200 bytes, 104857600 sectorsUnits = sectors of 1 * 512 = 512 bytesSector size (logical/physical): 512 bytes / 512 bytesI/O size (minimum/optimal): 512 bytes / 512 bytes接下来对这个磁盘进行分区。
 # fdisk /dev/sdbWelcome to fdisk (util-linux 2.23.2).Changes will remain in memory only, until you decide to write them.</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://cevin15.github.io/docs/%E6%88%91%E7%88%B1%E7%BC%96%E7%A8%8B/OAuth_2.0_%E6%B5%85%E6%9E%90/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://cevin15.github.io/docs/%E6%88%91%E7%88%B1%E7%BC%96%E7%A8%8B/OAuth_2.0_%E6%B5%85%E6%9E%90/</guid>
-      <description>OAuth 2.0 浅析#2021-07-30 15:20</description>
     </item>
     
   </channel>

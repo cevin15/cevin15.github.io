@@ -29,7 +29,7 @@ kubectl create secret docker-registry ${secret名} --docker-server=${私有仓�
 <link rel="icon" href="/favicon.png" type="image/x-icon">
 <link rel="stylesheet" href="/book.min.46181bc93375ba932026e753b37c40e6ff8bb16a9ef770c78bcc663e4577b1ba.css" integrity="sha256-RhgbyTN1upMgJudTs3xA5v&#43;LsWqe93DHi8xmPkV3sbo=" crossorigin="anonymous">
   <script defer src="/flexsearch.min.js"></script>
-  <script defer src="/en.search.min.665e2755ac861aeac3e26e8de91ada9af6124a5c7cd14634803f0a784d56f647.js" integrity="sha256-Zl4nVayGGurD4m6N6RramvYSSlx80UY0gD8KeE1W9kc=" crossorigin="anonymous"></script>
+  <script defer src="/en.search.min.39a2a20ead7685bc0c50d9f26cf21081c345d642b073d3f9e7f92e18eec0ed22.js" integrity="sha256-OaKiDq12hbwMUNnybPIQgcNF1kKwc9P55/kuGO7A7SI=" crossorigin="anonymous"></script>
 
   <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
 <!--
@@ -75,6 +75,63 @@ https://github.com/alex-shpak/hugo-book
 
   
   <ul>
+    
+      
+        <li class="book-section-flat" >
+          
+  
+  
+
+  
+    <span>我爱编程</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="https://cevin15.github.io/docs/%E6%88%91%E7%88%B1%E7%BC%96%E7%A8%8B/%E4%BD%BF%E7%94%A8_SpringCloud_Config_%E4%BD%9C%E4%B8%BA%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83/" class="">使用 SpringCloud Config 作为配置中心</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="https://cevin15.github.io/docs/%E6%88%91%E7%88%B1%E7%BC%96%E7%A8%8B/VSCode_%E7%A6%BB%E7%BA%BF%E5%AE%89%E8%A3%85%E6%8F%92%E4%BB%B6/" class="">VSCode 离线安装插件</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="https://cevin15.github.io/docs/%E6%88%91%E7%88%B1%E7%BC%96%E7%A8%8B/Oracle_JDBC%E8%BF%9E%E6%8E%A5%E7%9A%84%E5%87%A0%E7%A7%8D%E9%85%8D%E7%BD%AE%E5%86%99%E6%B3%95/" class="">Oracle JDBC连接的几种配置写法</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
     
       
         <li class="book-section-flat" >
@@ -276,63 +333,6 @@ https://github.com/alex-shpak/hugo-book
         </li>
       
     
-      
-        <li class="book-section-flat" >
-          
-  
-  
-
-  
-    <span>我爱编程</span>
-  
-
-          
-  <ul>
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="https://cevin15.github.io/docs/%E6%88%91%E7%88%B1%E7%BC%96%E7%A8%8B/VSCode_%E7%A6%BB%E7%BA%BF%E5%AE%89%E8%A3%85%E6%8F%92%E4%BB%B6/" class="">VSCode 离线安装插件</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="https://cevin15.github.io/docs/%E6%88%91%E7%88%B1%E7%BC%96%E7%A8%8B/Oracle_JDBC%E8%BF%9E%E6%8E%A5%E7%9A%84%E5%87%A0%E7%A7%8D%E9%85%8D%E7%BD%AE%E5%86%99%E6%B3%95/" class="">Oracle JDBC连接的几种配置写法</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="https://cevin15.github.io/docs/%E6%88%91%E7%88%B1%E7%BC%96%E7%A8%8B/OAuth_2.0_%E6%B5%85%E6%9E%90/" class="">Oauth 2.0 浅析</a>
-  
-
-        </li>
-      
-    
-  </ul>
-
-        </li>
-      
-    
   </ul>
 
 
@@ -392,6 +392,7 @@ https://github.com/alex-shpak/hugo-book
         <li><a href="#kubernetes-拉取私有仓库镜像">kubernetes 拉取私有仓库镜像</a></li>
         <li><a href="#进入容器内部">进入容器内部</a></li>
         <li><a href="#kubernetes-的kubeconfig-文件">kubernetes 的kubeconfig 文件</a></li>
+        <li><a href="#kubernetes-污点node-的处理">kubernetes 污点node 的处理</a></li>
       </ul>
     </li>
   </ul>
@@ -451,7 +452,13 @@ https://github.com/alex-shpak/hugo-book
   <a class="anchor" href="#kubernetes-%e7%9a%84kubeconfig-%e6%96%87%e4%bb%b6">#</a>
 </h2>
 <p>kubeconfig 保存为~/.kube/config ，作为默认文件。指定某个config文件语法为 &ndash;kubeconfig=${config 文件路径}</p>
-</article>
+<h2 id="kubernetes-污点node-的处理">
+  kubernetes 污点node 的处理
+  <a class="anchor" href="#kubernetes-%e6%b1%a1%e7%82%b9node-%e7%9a%84%e5%a4%84%e7%90%86">#</a>
+</h2>
+<pre tabindex="0"><code class="language-ku" data-lang="ku">kubectl describe node ${node name} |grep NoSchedule
+kubectl taint node ${node name} {上面查出来的value}
+</code></pre></article>
  
       
 
@@ -499,6 +506,7 @@ https://github.com/alex-shpak/hugo-book
         <li><a href="#kubernetes-拉取私有仓库镜像">kubernetes 拉取私有仓库镜像</a></li>
         <li><a href="#进入容器内部">进入容器内部</a></li>
         <li><a href="#kubernetes-的kubeconfig-文件">kubernetes 的kubeconfig 文件</a></li>
+        <li><a href="#kubernetes-污点node-的处理">kubernetes 污点node 的处理</a></li>
       </ul>
     </li>
   </ul>

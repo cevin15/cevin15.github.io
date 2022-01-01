@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="使用 SpringCloud Config 作为配置中心#一开始调研的是阿里的Nacos，花了些时间装上服务端，增加一个配置文件。客户端要调用的时候，启动怎么都是失败，提示某个类未找到。搜索后，在官方仓库的issue上，发现不止笔者一个人遇到这个问题升级Spring 2.4.1 ConfigurationBeanFactoryMetadata 找不到。好家伙，一年多了，这issue还挂着。SpringBoot 都2.6版本了，2.4版本居然还不支持。好像有人说，阿里的开源项目都是kpi项目？放弃。
+后面又稍微看了下Apollo，是携程的。但始终不放心，这要是也用着用着，就流产了，那咋搞？要不，还是用回官方的SpringCloud Config 吧。
+老实说，SpringCloud Config 的官方文档也实在是不清晰。好在网上文章不少。结合实践，几个小时下来算是把项目搭建起来了。
+Config Server#创建一个普通的SpringBoot 项目。 如果使用默认的Git 作为Config Server 的存储方式，那只需要一个依赖即可。
+&lt;dependencies&gt; &lt;dependency&gt; &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt; &lt;artifactId&gt;spring-cloud-config-server&lt;/artifactId&gt; &lt;/dependency&gt; &lt;/dependencies&gt; 项目配置，application.yaml
+server: port: 8001 spring: application: name: configServer cloud: config: server: git: ## 此处配置Git 仓库地址；如果是私有仓库，需要配置账号密码 uri: https://gitee.com/cevin15/config.git username: xxx password: xxx 项目启动类，ConfigerApplication.java
+@EnableConfigServer @SpringBootApplication public class ConfigServerApplication { public static void main(String[] args) { SpringApplication.run(ConfigServerApplication.class, args); } } 在Git 仓库中上传一个配置文件configClient-test.">
+<meta name="theme-color" content="#FFFFFF">
+<meta name="color-scheme" content="light dark"><meta property="og:title" content="使用 SpringCloud Config 作为配置中心" />
+<meta property="og:description" content="使用 SpringCloud Config 作为配置中心#一开始调研的是阿里的Nacos，花了些时间装上服务端，增加一个配置文件。客户端要调用的时候，启动怎么都是失败，提示某个类未找到。搜索后，在官方仓库的issue上，发现不止笔者一个人遇到这个问题升级Spring 2.4.1 ConfigurationBeanFactoryMetadata 找不到。好家伙，一年多了，这issue还挂着。SpringBoot 都2.6版本了，2.4版本居然还不支持。好像有人说，阿里的开源项目都是kpi项目？放弃。
+后面又稍微看了下Apollo，是携程的。但始终不放心，这要是也用着用着，就流产了，那咋搞？要不，还是用回官方的SpringCloud Config 吧。
+老实说，SpringCloud Config 的官方文档也实在是不清晰。好在网上文章不少。结合实践，几个小时下来算是把项目搭建起来了。
+Config Server#创建一个普通的SpringBoot 项目。 如果使用默认的Git 作为Config Server 的存储方式，那只需要一个依赖即可。
+&lt;dependencies&gt; &lt;dependency&gt; &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt; &lt;artifactId&gt;spring-cloud-config-server&lt;/artifactId&gt; &lt;/dependency&gt; &lt;/dependencies&gt; 项目配置，application.yaml
+server: port: 8001 spring: application: name: configServer cloud: config: server: git: ## 此处配置Git 仓库地址；如果是私有仓库，需要配置账号密码 uri: https://gitee.com/cevin15/config.git username: xxx password: xxx 项目启动类，ConfigerApplication.java
+@EnableConfigServer @SpringBootApplication public class ConfigServerApplication { public static void main(String[] args) { SpringApplication.run(ConfigServerApplication.class, args); } } 在Git 仓库中上传一个配置文件configClient-test." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://cevin15.github.io/docs/%E6%88%91%E7%88%B1%E7%BC%96%E7%A8%8B/%E4%BD%BF%E7%94%A8_SpringCloud_Config_%E4%BD%9C%E4%B8%BA%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83/" /><meta property="article:section" content="docs" />
+<meta property="article:published_time" content="2022-01-01T08:57:43+08:00" />
+<meta property="article:modified_time" content="2022-01-01T08:57:43+08:00" />
+
+<title>使用 SpringCloud Config 作为配置中心 | 英强的博客</title>
+<link rel="manifest" href="/manifest.json">
+<link rel="icon" href="/favicon.png" type="image/x-icon">
+<link rel="stylesheet" href="/book.min.46181bc93375ba932026e753b37c40e6ff8bb16a9ef770c78bcc663e4577b1ba.css" integrity="sha256-RhgbyTN1upMgJudTs3xA5v&#43;LsWqe93DHi8xmPkV3sbo=" crossorigin="anonymous">
+  <script defer src="/flexsearch.min.js"></script>
+  <script defer src="/en.search.min.39a2a20ead7685bc0c50d9f26cf21081c345d642b073d3f9e7f92e18eec0ed22.js" integrity="sha256-OaKiDq12hbwMUNnybPIQgcNF1kKwc9P55/kuGO7A7SI=" crossorigin="anonymous"></script>
+
+  <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/"><span>英强的博客</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <ul>
+    
+      
+        <li class="book-section-flat" >
+          
+  
+  
+
+  
+    <span>我爱编程</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="https://cevin15.github.io/docs/%E6%88%91%E7%88%B1%E7%BC%96%E7%A8%8B/%E4%BD%BF%E7%94%A8_SpringCloud_Config_%E4%BD%9C%E4%B8%BA%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83/" class=" active">使用 SpringCloud Config 作为配置中心</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="https://cevin15.github.io/docs/%E6%88%91%E7%88%B1%E7%BC%96%E7%A8%8B/VSCode_%E7%A6%BB%E7%BA%BF%E5%AE%89%E8%A3%85%E6%8F%92%E4%BB%B6/" class="">VSCode 离线安装插件</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="https://cevin15.github.io/docs/%E6%88%91%E7%88%B1%E7%BC%96%E7%A8%8B/Oracle_JDBC%E8%BF%9E%E6%8E%A5%E7%9A%84%E5%87%A0%E7%A7%8D%E9%85%8D%E7%BD%AE%E5%86%99%E6%B3%95/" class="">Oracle JDBC连接的几种配置写法</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li class="book-section-flat" >
+          
+  
+  
+
+  
+    <span>网络与运维</span>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="https://cevin15.github.io/docs/%E7%BD%91%E7%BB%9C%E4%B8%8E%E8%BF%90%E7%BB%B4/Linux_%E5%B0%8F%E6%8A%80%E5%B7%A7%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0/" class="">Linux 小技巧(持续更新)【置顶】</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="https://cevin15.github.io/docs/%E7%BD%91%E7%BB%9C%E4%B8%8E%E8%BF%90%E7%BB%B4/%E4%BD%BF%E7%94%A8_Keepalived_%E5%AE%9E%E7%8E%B0_Nginx_%E5%8F%8C%E6%9C%BA%E7%83%AD%E5%A4%87/" class="">使用Keepalived 实现Nginx 双机热备</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="https://cevin15.github.io/docs/%E7%BD%91%E7%BB%9C%E4%B8%8E%E8%BF%90%E7%BB%B4/Linux_%E9%98%B2%E7%81%AB%E5%A2%99_Firewalld_%E4%BD%BF%E7%94%A8%E7%BB%8F%E9%AA%8C/" class="">Linux 防火墙 Firewalld 使用过的经验</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="https://cevin15.github.io/docs/%E7%BD%91%E7%BB%9C%E4%B8%8E%E8%BF%90%E7%BB%B4/Kubernetes_%E4%B8%8EDocker_%E4%BD%BF%E7%94%A8%E7%BB%8F%E9%AA%8C/" class="">Kubernetes 与 Docker 使用经验</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="https://cevin15.github.io/docs/%E7%BD%91%E7%BB%9C%E4%B8%8E%E8%BF%90%E7%BB%B4/Linux_%E4%BD%BF%E7%94%A8chkconfig_%E5%AE%9E%E7%8E%B0%E6%9C%8D%E5%8A%A1%E8%87%AA%E5%90%AF%E5%8A%A8/" class="">Linux 使用chkconfig 实现服务自启动</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="https://cevin15.github.io/docs/%E7%BD%91%E7%BB%9C%E4%B8%8E%E8%BF%90%E7%BB%B4/Linux_%E8%87%AA%E5%AE%9A%E4%B9%89%E6%9C%8D%E5%8A%A1/" class="">Linux 自定义服务</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="https://cevin15.github.io/docs/%E7%BD%91%E7%BB%9C%E4%B8%8E%E8%BF%90%E7%BB%B4/Nginx_%E6%AD%A3%E5%90%91%E4%BB%A3%E7%90%86%E8%AE%A9%E5%86%85%E7%BD%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%94%AF%E6%8C%81%E4%B8%8A%E7%BD%91/" class="">Nginx 正向代理——让内网服务器支持上网</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="https://cevin15.github.io/docs/%E7%BD%91%E7%BB%9C%E4%B8%8E%E8%BF%90%E7%BB%B4/Linux_%E9%85%8D%E7%BD%AEIPv6%E7%BD%91%E7%BB%9C/" class="">Linux 配置IPv6网络</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="https://cevin15.github.io/docs/%E7%BD%91%E7%BB%9C%E4%B8%8E%E8%BF%90%E7%BB%B4/Linux_%E4%BD%BF%E7%94%A8logrotate_%E5%88%87%E5%89%B2nginx_%E6%97%A5%E5%BF%97%E6%96%87%E4%BB%B6/" class="">Linux中使用logrotate 切割nginx 日志文件【转】</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="https://cevin15.github.io/docs/%E7%BD%91%E7%BB%9C%E4%B8%8E%E8%BF%90%E7%BB%B4/Linux_Nginx%E5%AE%89%E8%A3%85/" class="">Linux的Nginx 安装【转】</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="https://cevin15.github.io/docs/%E7%BD%91%E7%BB%9C%E4%B8%8E%E8%BF%90%E7%BB%B4/Linux%E7%9A%84%E8%99%9A%E6%8B%9FIP%E8%AE%BE%E7%BD%AE/" class="">Linux的虚拟IP设置</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="https://cevin15.github.io/docs/%E7%BD%91%E7%BB%9C%E4%B8%8E%E8%BF%90%E7%BB%B4/%E8%AE%B0%E4%B8%80%E6%AC%A1%E8%A7%A3%E5%86%B3Telnet%E4%B8%8D%E9%80%9A%E9%97%AE%E9%A2%98%E7%9A%84%E7%BB%8F%E8%BF%87/" class="">记一次解决“Telnet不通”问题的经过</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="https://cevin15.github.io/docs/%E7%BD%91%E7%BB%9C%E4%B8%8E%E8%BF%90%E7%BB%B4/Linux_%E4%BF%AE%E6%94%B9DNS_%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%85%8D%E7%BD%AE/" class="">Linux 修改DNS 服务器配置</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="https://cevin15.github.io/docs/%E7%BD%91%E7%BB%9C%E4%B8%8E%E8%BF%90%E7%BB%B4/CentOS_7.x_%E6%89%A9%E5%AE%B9/" class="">CentOS 7.x 扩容</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var a=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(b){localStorage.setItem("menu.scrollTop",a.scrollTop)}),a.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>使用 SpringCloud Config 作为配置中心</strong>
+
+  <label for="toc-control">
+    
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#使用-springcloud-config-作为配置中心">使用 SpringCloud Config 作为配置中心</a>
+      <ul>
+        <li><a href="#config-server">Config Server</a></li>
+        <li><a href="#config-client">Config Client</a></li>
+        <li><a href="#支持jdbc-的config-server">支持JDBC 的Config Server</a></li>
+        <li><a href="#总结">总结</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><h1 id="使用-springcloud-config-作为配置中心">
+  使用 SpringCloud Config 作为配置中心
+  <a class="anchor" href="#%e4%bd%bf%e7%94%a8-springcloud-config-%e4%bd%9c%e4%b8%ba%e9%85%8d%e7%bd%ae%e4%b8%ad%e5%bf%83">#</a>
+</h1>
+<p>一开始调研的是阿里的Nacos，花了些时间装上服务端，增加一个配置文件。客户端要调用的时候，启动怎么都是失败，提示某个类未找到。搜索后，在官方仓库的issue上，发现不止笔者一个人遇到这个问题
+  <a href="https://github.com/alibaba/nacos/issues/4554">升级Spring 2.4.1 ConfigurationBeanFactoryMetadata 找不到</a>。好家伙，一年多了，这issue还挂着。SpringBoot 都2.6版本了，2.4版本居然还不支持。好像有人说，阿里的开源项目都是kpi项目？放弃。</p>
+<p>后面又稍微看了下Apollo，是携程的。但始终不放心，这要是也用着用着，就流产了，那咋搞？要不，还是用回官方的SpringCloud Config 吧。</p>
+<p>老实说，SpringCloud Config 的官方文档也实在是不清晰。好在网上文章不少。结合实践，几个小时下来算是把项目搭建起来了。</p>
+<h2 id="config-server">
+  Config Server
+  <a class="anchor" href="#config-server">#</a>
+</h2>
+<p>创建一个普通的SpringBoot 项目。
+如果使用默认的Git 作为Config Server 的存储方式，那只需要一个依赖即可。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependencies&gt;</span>
+	<span style="color:#f92672">&lt;dependency&gt;</span>
+	<span style="color:#f92672">&lt;groupId&gt;</span>org.springframework.cloud<span style="color:#f92672">&lt;/groupId&gt;</span>
+	<span style="color:#f92672">&lt;artifactId&gt;</span>spring-cloud-config-server<span style="color:#f92672">&lt;/artifactId&gt;</span>
+	<span style="color:#f92672">&lt;/dependency&gt;</span>
+<span style="color:#f92672">&lt;/dependencies&gt;</span>
+</code></pre></div><p>项目配置，<code>application.yaml</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#f92672">server</span>:
+  <span style="color:#f92672">port</span>: <span style="color:#ae81ff">8001</span>
+
+<span style="color:#f92672">spring</span>:
+  <span style="color:#f92672">application</span>:
+    <span style="color:#f92672">name</span>: <span style="color:#ae81ff">configServer</span>
+  <span style="color:#f92672">cloud</span>:
+    <span style="color:#f92672">config</span>:
+      <span style="color:#f92672">server</span>:
+        <span style="color:#f92672">git</span>:
+          <span style="color:#75715e">## 此处配置Git 仓库地址；如果是私有仓库，需要配置账号密码</span>
+          <span style="color:#f92672">uri</span>: <span style="color:#ae81ff">https://gitee.com/cevin15/config.git</span>
+          <span style="color:#f92672">username</span>: <span style="color:#ae81ff">xxx</span>
+          <span style="color:#f92672">password</span>: <span style="color:#ae81ff">xxx</span>
+</code></pre></div><p>项目启动类，ConfigerApplication.java</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@EnableConfigServer</span>
+<span style="color:#a6e22e">@SpringBootApplication</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ConfigServerApplication</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        SpringApplication<span style="color:#f92672">.</span><span style="color:#a6e22e">run</span><span style="color:#f92672">(</span>ConfigServerApplication<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">,</span> args<span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>在Git 仓库中上传一个配置文件<code>configClient-test.yaml</code>，configClient 为客户端项目的application name，test 为客户端项目的profile。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#f92672">server</span>:
+  <span style="color:#f92672">port</span>: <span style="color:#ae81ff">8008</span>
+</code></pre></div><p>访问
+  <a href="http://localhost:8001/configClient-test.yaml">localhost:8001/configClient-test.yaml</a>，响应如下，说明Config Server 启动成功</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#f92672">server</span>:
+  <span style="color:#f92672">port</span>: <span style="color:#ae81ff">8008</span>
+</code></pre></div><h2 id="config-client">
+  Config Client
+  <a class="anchor" href="#config-client">#</a>
+</h2>
+<p>创建一个普通的SpringBoot 项目。
+添加依赖</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependency&gt;</span>
+	<span style="color:#f92672">&lt;groupId&gt;</span>org.springframework.boot<span style="color:#f92672">&lt;/groupId&gt;</span>
+	<span style="color:#f92672">&lt;artifactId&gt;</span>spring-boot-starter-web<span style="color:#f92672">&lt;/artifactId&gt;</span>
+<span style="color:#f92672">&lt;/dependency&gt;</span>
+<span style="color:#f92672">&lt;dependency&gt;</span>
+	<span style="color:#f92672">&lt;groupId&gt;</span>org.springframework.cloud<span style="color:#f92672">&lt;/groupId&gt;</span>
+	<span style="color:#f92672">&lt;artifactId&gt;</span>spring-cloud-starter-bootstrap<span style="color:#f92672">&lt;/artifactId&gt;</span>
+<span style="color:#f92672">&lt;/dependency&gt;</span>
+<span style="color:#f92672">&lt;dependency&gt;</span>
+	<span style="color:#f92672">&lt;groupId&gt;</span>org.springframework.cloud<span style="color:#f92672">&lt;/groupId&gt;</span>
+	<span style="color:#f92672">&lt;artifactId&gt;</span>spring-cloud-starter-config<span style="color:#f92672">&lt;/artifactId&gt;</span>
+<span style="color:#f92672">&lt;/dependency&gt;</span>
+</code></pre></div><p>这里要注意，SpringBoot 在2.4版本之后，需要添加bootstrap 依赖，项目才能读取bootstrap 启动文件
+项目配置，bootstrap.yaml</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#f92672">server</span>:
+  <span style="color:#f92672">port</span>: <span style="color:#ae81ff">8080</span>	<span style="color:#75715e">##增加一个与配置中心配置不一致的端口，看看最终使用哪个:-)</span>
+
+<span style="color:#f92672">spring</span>:
+  <span style="color:#f92672">application</span>:
+    <span style="color:#f92672">name</span>: <span style="color:#ae81ff">configClient</span>
+  <span style="color:#f92672">cloud</span>:
+    <span style="color:#f92672">config</span>:
+      <span style="color:#f92672">label</span>: <span style="color:#ae81ff">main</span>
+      <span style="color:#f92672">profile</span>: <span style="color:#ae81ff">test</span>
+      <span style="color:#f92672">uri</span>: <span style="color:#ae81ff">http://localhost:8001</span>
+</code></pre></div><p>启动项目，应用端口号 8008，说明参数已经成功注入。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#f92672">INFO - 28460 Fetching config from server at </span>: <span style="color:#ae81ff">http://localhost:8001</span>
+<span style="color:#f92672">INFO - 28460 Located environment</span>: <span style="color:#ae81ff">name=configClient, profiles=[test], label=main, version=e06de6240b98bc9c9fad29692d31e59c8ce2d793, state=null</span>
+<span style="color:#f92672">INFO - 28460 Located property source</span>: [<span style="color:#ae81ff">BootstrapPropertySource {name=&#39;bootstrapProperties-configClient&#39;}, BootstrapPropertySource {name=&#39;bootstrapProperties-https://gitee.com/cevin15/config.git/file:C:\Users\xxxx\AppData\Local\Temp\config-repo-8787147078801297440\configClient-test.yaml&#39;}]</span>
+<span style="color:#f92672">INFO - 28460 No active profile set, falling back to default profiles</span>: <span style="color:#ae81ff">default</span>
+<span style="color:#ae81ff">INFO - 28460 BeanFactory id=2c1fe4dd-1f53-3283-bcc7-3096bc8368a3</span>
+<span style="color:#f92672">INFO - 28460 Tomcat initialized with port(s)</span>: <span style="color:#ae81ff">8008</span> <span style="color:#ae81ff">(http)</span>
+<span style="color:#ae81ff">INFO - 28460 Starting service [Tomcat]</span>
+<span style="color:#f92672">INFO - 28460 Starting Servlet engine</span>: [<span style="color:#ae81ff">Apache Tomcat/9.0.56]</span>
+<span style="color:#ae81ff">INFO - 28460 Initializing Spring embedded WebApplicationContext</span>
+<span style="color:#f92672">INFO - 28460 Root WebApplicationContext</span>: <span style="color:#ae81ff">initialization completed in 2556 ms</span>
+<span style="color:#f92672">INFO - 28460 Tomcat started on port(s)</span>: <span style="color:#ae81ff">8008</span> <span style="color:#ae81ff">(http) with context path &#39;&#39;</span>
+<span style="color:#ae81ff">INFO - 28460 Started ConfigClientApplication in 10.73 seconds (JVM running for 11.615)</span>
+</code></pre></div><h2 id="支持jdbc-的config-server">
+  支持JDBC 的Config Server
+  <a class="anchor" href="#%e6%94%af%e6%8c%81jdbc-%e7%9a%84config-server">#</a>
+</h2>
+<p>SpringCloud Config 除了Git，还支持数据库存储配置信息。我们只需要一个表，5个字段即可。
+我们使用数据库作为存储库，在ConfigServer项目中添加如下数据库依赖</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependency&gt;</span>
+    <span style="color:#f92672">&lt;groupId&gt;</span>org.springframework.boot<span style="color:#f92672">&lt;/groupId&gt;</span>
+    <span style="color:#f92672">&lt;artifactId&gt;</span>spring-boot-starter-jdbc<span style="color:#f92672">&lt;/artifactId&gt;</span>
+<span style="color:#f92672">&lt;/dependency&gt;</span>
+<span style="color:#f92672">&lt;dependency&gt;</span>
+    <span style="color:#f92672">&lt;groupId&gt;</span>mysql<span style="color:#f92672">&lt;/groupId&gt;</span>
+    <span style="color:#f92672">&lt;artifactId&gt;</span>mysql-connector-java<span style="color:#f92672">&lt;/artifactId&gt;</span>
+    <span style="color:#f92672">&lt;version&gt;</span>8.0.25<span style="color:#f92672">&lt;/version&gt;</span>
+<span style="color:#f92672">&lt;/dependency&gt;</span>
+</code></pre></div><p>修改项目配置，application.yaml</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#f92672">server</span>:
+  <span style="color:#f92672">port</span>: <span style="color:#ae81ff">8001</span>
+
+<span style="color:#f92672">spring</span>:
+  <span style="color:#f92672">application</span>:
+    <span style="color:#f92672">name</span>: <span style="color:#ae81ff">configServer</span>
+  <span style="color:#f92672">profiles</span>:
+  	<span style="color:#f92672">active</span>: <span style="color:#ae81ff">jdbc</span> <span style="color:#75715e">##此次修改为jdbc，默认为git</span>
+  <span style="color:#f92672">cloud</span>:
+    <span style="color:#f92672">config</span>:
+      <span style="color:#f92672">server</span>:
+        <span style="color:#f92672">jdbc</span>:
+          <span style="color:#75715e">## Config Server 默认使用此Sql 读取配置</span>
+          <span style="color:#f92672">sql</span>: <span style="color:#ae81ff">select c_key, c_value from configer where c_application=? and c_profile=? and c_label=?</span>
+  <span style="color:#f92672">datasource</span>:
+  	<span style="color:#f92672">driver-class-name</span>: <span style="color:#ae81ff">com.mysql.cj.jdbc.Driver</span>
+  	<span style="color:#f92672">url</span>: <span style="color:#ae81ff">jdbc:mysql://localhost:3306/config</span>
+  	<span style="color:#f92672">username</span>: <span style="color:#ae81ff">xxx</span>
+  	<span style="color:#f92672">password</span>: <span style="color:#ae81ff">xxx</span>
+</code></pre></div><p>Config Server 默认使用此Sql 读取配置。现在建一个库config，表configer，然后添加一条数据：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"><span style="color:#66d9ef">CREATE</span> <span style="color:#66d9ef">TABLE</span> <span style="color:#f92672">`</span>configer<span style="color:#f92672">`</span> (
+  <span style="color:#f92672">`</span>id<span style="color:#f92672">`</span> int(<span style="color:#ae81ff">11</span>) <span style="color:#66d9ef">NOT</span> <span style="color:#66d9ef">NULL</span> AUTO_INCREMENT,
+  <span style="color:#f92672">`</span>c_key<span style="color:#f92672">`</span> varchar(<span style="color:#ae81ff">255</span>) <span style="color:#66d9ef">DEFAULT</span> <span style="color:#66d9ef">NULL</span>,
+  <span style="color:#f92672">`</span>c_value<span style="color:#f92672">`</span> varchar(<span style="color:#ae81ff">255</span>) <span style="color:#66d9ef">DEFAULT</span> <span style="color:#66d9ef">NULL</span>,
+  <span style="color:#f92672">`</span>c_application<span style="color:#f92672">`</span> varchar(<span style="color:#ae81ff">255</span>) <span style="color:#66d9ef">DEFAULT</span> <span style="color:#66d9ef">NULL</span>,
+  <span style="color:#f92672">`</span>c_profile<span style="color:#f92672">`</span> varchar(<span style="color:#ae81ff">255</span>) <span style="color:#66d9ef">DEFAULT</span> <span style="color:#66d9ef">NULL</span>,
+  <span style="color:#f92672">`</span>c_label<span style="color:#f92672">`</span> varchar(<span style="color:#ae81ff">255</span>) <span style="color:#66d9ef">DEFAULT</span> <span style="color:#66d9ef">NULL</span>,
+  <span style="color:#66d9ef">PRIMARY</span> <span style="color:#66d9ef">KEY</span> (<span style="color:#f92672">`</span>id<span style="color:#f92672">`</span>)
+) ENGINE<span style="color:#f92672">=</span>InnoDB AUTO_INCREMENT<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span> <span style="color:#66d9ef">DEFAULT</span> CHARSET<span style="color:#f92672">=</span>utf8mb4;
+<span style="color:#f92672">//</span> <span style="color:#960050;background-color:#1e0010">端口我们使用</span><span style="color:#ae81ff">8009</span><span style="color:#960050;background-color:#1e0010">，跟</span>Git <span style="color:#960050;background-color:#1e0010">的配置区分下</span>
+<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> <span style="color:#f92672">`</span>configer<span style="color:#f92672">`</span> <span style="color:#66d9ef">VALUES</span> (<span style="color:#e6db74">&#39;1&#39;</span>, <span style="color:#e6db74">&#39;server.port&#39;</span>, <span style="color:#e6db74">&#39;8009&#39;</span>, <span style="color:#e6db74">&#39;configClient&#39;</span>, <span style="color:#e6db74">&#39;test&#39;</span>, <span style="color:#e6db74">&#39;main&#39;</span>);	
+</code></pre></div><p>启动server项目，不改动client项目，重新启动，响应如下，发现client 使用了8009端口，JDBC 版本的Config Server 启动成功了。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#f92672">INFO - Fetching config from server at </span>: <span style="color:#ae81ff">http://localhost:8001</span>
+<span style="color:#f92672">INFO - Located environment</span>: <span style="color:#ae81ff">name=configClient, profiles=[test], label=main, version=null, state=null</span>
+<span style="color:#f92672">INFO - Located property source</span>: [<span style="color:#ae81ff">BootstrapPropertySource {name=&#39;bootstrapProperties-configClient&#39;}, BootstrapPropertySource {name=&#39;bootstrapProperties-configClient-test&#39;}]</span>
+<span style="color:#f92672">INFO - No active profile set, falling back to default profiles</span>: <span style="color:#ae81ff">default</span>
+<span style="color:#ae81ff">INFO - BeanFactory id=2c1fe4dd-1f53-3283-bcc7-3096bc8368a3</span>
+<span style="color:#f92672">INFO - Tomcat initialized with port(s)</span>: <span style="color:#ae81ff">8009</span> <span style="color:#ae81ff">(http)</span>
+<span style="color:#ae81ff">INFO - Starting service [Tomcat]</span>
+<span style="color:#f92672">INFO - Starting Servlet engine</span>: [<span style="color:#ae81ff">Apache Tomcat/9.0.56]</span>
+<span style="color:#ae81ff">INFO - Initializing Spring embedded WebApplicationContext</span>
+<span style="color:#f92672">INFO - Root WebApplicationContext</span>: <span style="color:#ae81ff">initialization completed in 2332 ms</span>
+<span style="color:#f92672">INFO - Tomcat started on port(s)</span>: <span style="color:#ae81ff">8009</span> <span style="color:#ae81ff">(http) with context path &#39;&#39;</span>
+<span style="color:#ae81ff">INFO - Started ConfigClientApplication in 10.394 seconds (JVM running for 11.243)</span>
+</code></pre></div><h2 id="总结">
+  总结
+  <a class="anchor" href="#%e6%80%bb%e7%bb%93">#</a>
+</h2>
+<p>Spring Cloud Config 作为官方出品的配置中心，使用简单，拓展性强，而且升级有保障，很是推荐:-)</p>
+<p>文章中的项目已提交到[Gitee](
+  <a href="https://gitee.com/cevin15/spring-cloud-config-demo">SpringCloudConfigDemo: 使用Spring Cloud Config 作为配置中心的Demo (gitee.com)</a>)，有需要可以参考。</p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+
+</div>
+
+
+
+  <script>(function(){function a(c){const a=window.getSelection(),b=document.createRange();b.selectNodeContents(c),a.removeAllRanges(),a.addRange(b)}document.querySelectorAll("pre code").forEach(b=>{b.addEventListener("click",function(c){a(b.parentElement),navigator.clipboard&&navigator.clipboard.writeText(b.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#使用-springcloud-config-作为配置中心">使用 SpringCloud Config 作为配置中心</a>
+      <ul>
+        <li><a href="#config-server">Config Server</a></li>
+        <li><a href="#config-client">Config Client</a></li>
+        <li><a href="#支持jdbc-的config-server">支持JDBC 的Config Server</a></li>
+        <li><a href="#总结">总结</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
