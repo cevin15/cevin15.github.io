@@ -12,13 +12,14 @@
       <pubDate>Sat, 01 Jan 2022 08:57:43 +0800</pubDate>
       
       <guid>https://cevin15.github.io/docs/%E6%88%91%E7%88%B1%E7%BC%96%E7%A8%8B/%E4%BD%BF%E7%94%A8_SpringCloud_Config_%E4%BD%9C%E4%B8%BA%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83/</guid>
-      <description>使用 SpringCloud Config 作为配置中心#一开始调研的是阿里的Nacos，花了些时间装上服务端，增加一个配置文件。客户端要调用的时候，启动怎么都是失败，提示某个类未找到。搜索后，在官方仓库的issue上，发现不止笔者一个人遇到这个问题升级Spring 2.4.1 ConfigurationBeanFactoryMetadata 找不到。好家伙，一年多了，这issue还挂着。SpringBoot 都2.6版本了，2.4版本居然还不支持。好像有人说，阿里的开源项目都是kpi项目？放弃。
+      <description>使用 SpringCloud Config 作为配置中心#2022-01-01 08:57
+一开始调研的是阿里的Nacos，花了些时间装上服务端，增加一个配置文件。客户端要调用的时候，启动怎么都是失败，提示某个类未找到。搜索后，在官方仓库的issue上，发现不止笔者一个人遇到这个问题升级Spring 2.4.1 ConfigurationBeanFactoryMetadata 找不到。好家伙，一年多了，这issue还挂着。SpringBoot 都2.6版本了，2.4版本居然还不支持。好像有人说，阿里的开源项目都是kpi项目？放弃。
 后面又稍微看了下Apollo，是携程的。但始终不放心，这要是也用着用着，就流产了，那咋搞？要不，还是用回官方的SpringCloud Config 吧。
 老实说，SpringCloud Config 的官方文档也实在是不清晰。好在网上文章不少。结合实践，几个小时下来算是把项目搭建起来了。
 Config Server#创建一个普通的SpringBoot 项目。 如果使用默认的Git 作为Config Server 的存储方式，那只需要一个依赖即可。
 &amp;lt;dependencies&amp;gt; &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.springframework.cloud&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;spring-cloud-config-server&amp;lt;/artifactId&amp;gt; &amp;lt;/dependency&amp;gt; &amp;lt;/dependencies&amp;gt; 项目配置，application.yaml
 server: port: 8001 spring: application: name: configServer cloud: config: server: git: ## 此处配置Git 仓库地址；如果是私有仓库，需要配置账号密码 uri: https://gitee.com/cevin15/config.git username: xxx password: xxx 项目启动类，ConfigerApplication.java
-@EnableConfigServer @SpringBootApplication public class ConfigServerApplication { public static void main(String[] args) { SpringApplication.run(ConfigServerApplication.class, args); } } 在Git 仓库中上传一个配置文件configClient-test.</description>
+@EnableConfigServer @SpringBootApplication public class ConfigServerApplication { public static void main(String[] args) { SpringApplication.</description>
     </item>
     
     <item>
