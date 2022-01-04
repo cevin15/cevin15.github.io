@@ -29,7 +29,7 @@ cat test.tar.gz.* &gt; test_new.tar.gz 删除find 出来的文件" />
 <link rel="icon" href="/favicon.png" type="image/x-icon">
 <link rel="stylesheet" href="/book.min.46181bc93375ba932026e753b37c40e6ff8bb16a9ef770c78bcc663e4577b1ba.css" integrity="sha256-RhgbyTN1upMgJudTs3xA5v&#43;LsWqe93DHi8xmPkV3sbo=" crossorigin="anonymous">
   <script defer src="/flexsearch.min.js"></script>
-  <script defer src="/en.search.min.8365198887c95b5f9ca0f6d390169ccf7b16ea9cf52c779a6d68b25fec5f6bf2.js" integrity="sha256-g2UZiIfJW1&#43;coPbTkBacz3sW6pz1LHeabWiyX&#43;xfa/I=" crossorigin="anonymous"></script>
+  <script defer src="/en.search.min.15c7a7f21c2d9030ecedbfb770fa17ab6e5ddb879f9c5984b1201f6a10a19f44.js" integrity="sha256-Fcen8hwtkDDs7b&#43;3cPoXq25d24efnFmEsSAfahChn0Q=" crossorigin="anonymous"></script>
 
   <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
 <!--
@@ -464,6 +464,11 @@ https://github.com/alex-shpak/hugo-book
 <p>允许非root 用户使用1024以下的端口号</p>
 <p>即时生效：<code>sysctl net.ipv4.ip_unprivileged_port_start=0</code></p>
 <p>重启生效：<code>echo &quot;net.ipv4.ip_unprivileged_port_start=0&quot; &gt;&gt; /etc/sysctl.conf</code></p>
+</li>
+<li>
+<p>wget 下载文件</p>
+<p><code>wget -O {文件名} {下载链接}</code> 可以下载文件，不过有时候会遇到文件下载接口启用了<code>gzip</code>，此时下载可能会出现文件不完整的情况，导致文件无法打开。此时，下载下载的应该是一个gzip文件，所以我们在原文件名指定多一个文件后缀。</p>
+<p><code>wget -O {文件名}.gz {下载链接}</code> ，下载下来之后，使用<code>gunzip {文件名}.gz</code>进行解压，就可以得到原文件了。</p>
 </li>
 </ol>
 </article>
