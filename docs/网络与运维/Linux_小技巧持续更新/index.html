@@ -29,7 +29,7 @@ cat test.tar.gz.* &gt; test_new.tar.gz 删除find 出来的文件" />
 <link rel="icon" href="/favicon.png" type="image/x-icon">
 <link rel="stylesheet" href="/book.min.46181bc93375ba932026e753b37c40e6ff8bb16a9ef770c78bcc663e4577b1ba.css" integrity="sha256-RhgbyTN1upMgJudTs3xA5v&#43;LsWqe93DHi8xmPkV3sbo=" crossorigin="anonymous">
   <script defer src="/flexsearch.min.js"></script>
-  <script defer src="/en.search.min.99063a45fea1173695bf756edfe185afeb766df73c60afd78924243a9abb14f4.js" integrity="sha256-mQY6Rf6hFzaVv3Vu3&#43;GFr&#43;t2bfc8YK/XiSQkOpq7FPQ=" crossorigin="anonymous"></script>
+  <script defer src="/en.search.min.b05947ad16c35e5db87f584865ca824bceb4617457be80a2215feb6b01fbd544.js" integrity="sha256-sFlHrRbDXl24f1hIZcqCS860YXRXvoCiIV/rawH71UQ=" crossorigin="anonymous"></script>
 
   <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
 <!--
@@ -496,7 +496,20 @@ https://github.com/alex-shpak/hugo-book
 <p><code>wget -O {文件名} {下载链接}</code> 可以下载文件，不过有时候会遇到文件下载接口启用了<code>gzip</code>，此时下载可能会出现文件不完整的情况，导致文件无法打开。此时，下载下载的应该是一个gzip文件，所以我们在原文件名指定多一个文件后缀。</p>
 <p><code>wget -O {文件名}.gz {下载链接}</code> ，下载下来之后，使用<code>gunzip {文件名}.gz</code>进行解压，就可以得到原文件了。</p>
 </li>
+<li>
+<p>解决centos7 <code>This Kernel is too old</code> 的问题
+
+  <a href="https://phoenixnap.com/kb/how-to-upgrade-kernel-centos">https://phoenixnap.com/kb/how-to-upgrade-kernel-centos</a>
+实际例子：</p>
+</li>
 </ol>
+<pre tabindex="0"><code>rpm -Uvh http://www.elrepo.org/elrepo-release-7.0-3.el7.elrepo.noarch.rpm
+yum --enablerepo=elrepo-kernel install -y kernel-lt
+grub2-set-default 0  //此处的序号，要通过系统启动界面查看，选择对应内核的系统
+reboot   //重启
+</code></pre><p>如下，要使用5.x的内核版本，则应该<code>grub2-set-default 1</code>
+
+  <img src="/pic/2023/06/11.png" alt="" /></p>
 </article>
  
       
