@@ -5,7 +5,7 @@
     <link>https://cevin15.github.io/docs/%E7%BD%91%E7%BB%9C%E4%B8%8E%E8%BF%90%E7%BB%B4/</link>
     <description>Recent content in 网络与运维 on 英强的博客</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Wed, 01 Dec 2021 20:05:43 +0800</lastBuildDate><atom:link href="https://cevin15.github.io/docs/%E7%BD%91%E7%BB%9C%E4%B8%8E%E8%BF%90%E7%BB%B4/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 20 Jun 2023 18:29:43 +0800</lastBuildDate><atom:link href="https://cevin15.github.io/docs/%E7%BD%91%E7%BB%9C%E4%B8%8E%E8%BF%90%E7%BB%B4/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Linux 小技巧(持续更新)【置顶】</title>
       <link>https://cevin15.github.io/docs/%E7%BD%91%E7%BB%9C%E4%B8%8E%E8%BF%90%E7%BB%B4/Linux_%E5%B0%8F%E6%8A%80%E5%B7%A7%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0/</link>
@@ -19,6 +19,24 @@
 split -b 40M -d -a 2 test.tar.gz test.tar.gz. 参数含义： -b：指定每个文件的大小，单位可以为B、K、M ； -d：使用数字而不是字母作为后缀名 ； -a：后缀名长度，默认为2；
  ​	合并
 cat test.tar.gz.* &amp;gt; test_new.tar.gz 删除find 出来的文件</description>
+    </item>
+    
+    <item>
+      <title>【转】Hyper-v中CentOS-7的静态/动态网络配置及SSH连接小记</title>
+      <link>https://cevin15.github.io/docs/%E7%BD%91%E7%BB%9C%E4%B8%8E%E8%BF%90%E7%BB%B4/%E8%BD%ACHyper-v%E4%B8%ADCentOS-7%E7%9A%84%E9%9D%99%E6%80%81%E7%BD%91%E7%BB%9C%E4%B8%8E%E5%8A%A8%E6%80%81%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8F%8ASSH%E8%BF%9E%E6%8E%A5%E5%B0%8F%E8%AE%B0/</link>
+      <pubDate>Tue, 20 Jun 2023 18:29:43 +0800</pubDate>
+      
+      <guid>https://cevin15.github.io/docs/%E7%BD%91%E7%BB%9C%E4%B8%8E%E8%BF%90%E7%BB%B4/%E8%BD%ACHyper-v%E4%B8%ADCentOS-7%E7%9A%84%E9%9D%99%E6%80%81%E7%BD%91%E7%BB%9C%E4%B8%8E%E5%8A%A8%E6%80%81%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8F%8ASSH%E8%BF%9E%E6%8E%A5%E5%B0%8F%E8%AE%B0/</guid>
+      <description>【转】Hyper-v中CentOS-7的静态/动态网络配置及SSH连接小记#2023-06-20 18:29
+ 原文：Hyper-v中CentOS-7的静态/动态网络配置及SSH连接小记
+ 需求# 本地win10 hyper-v中安装centos7，centos7可连接外网通过yum下载各种包 centos7拥有静态ip，可以稳定的通过ssh工具（例如xshell）链接  思路#使用双网卡，一个负责外网，一个负责内网：
+ 使用hyper-v自带默认虚拟交换机default switch的网卡自动获取外网连接 新建内部虚拟交换机与新建网卡相关联，配置静态ip，供SSH连接  步骤#  新建类型为“内部”的虚拟交换机   在“控制面板-网络连接”中设置此交换机地址，名字：ssh-connect   虚拟机关机前提下，为虚拟交换机新建网卡。（右键虚拟机-设置）   第一块网卡关联default switch，第二块关联新建的虚拟交换机   打开虚拟机，虚拟机内设置两块网卡的网络
+配置eth0
+在虚拟机中编辑/etc/sysconfig/network-scripts/ifcfg-eth0，把BOOTPROTO改为dhcp，ONBOOT改为yes：
+[root@localhost ~]# cat /etc/sysconfig/network-scripts/ifcfg-eth0TYPE=EthernetPROXY_METHOD=noneBROWSER_ONLY=noBOOTPROTO=dhcpDEFROUTE=yesIPV4_FAILURE_FATAL=noIPV6INIT=yesIPV6_AUTOCONF=yesIPV6_DEFROUTE=yesIPV6_FAILURE_FATAL=noIPV6_ADDR_GEN_MODE=stable-privacyNAME=eth0UUID=ec60946a-e236-4735-8bac-dd97dcd3d469DEVICE=eth0ONBOOT=yes配置eth1
+拷贝ifcfg-eth0，并改名为ifcfg-eth1。修改BOOTPROTO为static，把NAME和DEVICE改为eth1，删除UUID（不能和eth0相同）。
+加上IPADDR=192.168.218.2和NETMASK=255.255.255.0，IP必须与ssh-connect一个网段，不用设置GATEWAY
+[root@localhost ~]# cat /etc/sysconfig/network-scripts/ifcfg-eth1TYPE=EthernetPROXY_METHOD=noneBROWSER_ONLY=noBOOTPROTO=staticDEFROUTE=yesIPV4_FAILURE_FATAL=noIPV6INIT=yesIPV6_AUTOCONF=yesIPV6_DEFROUTE=yesIPV6_FAILURE_FATAL=noIPV6_ADDR_GEN_MODE=stable-privacyNAME=eth1DEVICE=eth1ONBOOT=yesIPADDR=192.</description>
     </item>
     
     <item>
