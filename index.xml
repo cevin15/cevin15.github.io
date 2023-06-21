@@ -56,6 +56,17 @@ server: port: 8001 spring: application: name: configServer cloud: config: server
     </item>
     
     <item>
+      <title>不重启Java 进程，导出dump 文件的方法</title>
+      <link>https://cevin15.github.io/docs/%E6%88%91%E7%88%B1%E7%BC%96%E7%A8%8B/%E4%B8%8D%E9%87%8D%E5%90%AFJava-%E8%BF%9B%E7%A8%8B%E5%AF%BC%E5%87%BAdump_%E6%96%87%E4%BB%B6%E7%9A%84%E6%96%B9%E6%B3%95/</link>
+      <pubDate>Thu, 26 May 2022 09:27:43 +0800</pubDate>
+      
+      <guid>https://cevin15.github.io/docs/%E6%88%91%E7%88%B1%E7%BC%96%E7%A8%8B/%E4%B8%8D%E9%87%8D%E5%90%AFJava-%E8%BF%9B%E7%A8%8B%E5%AF%BC%E5%87%BAdump_%E6%96%87%E4%BB%B6%E7%9A%84%E6%96%B9%E6%B3%95/</guid>
+      <description>CentOS 7.x 扩容#2022-05-26 09:27
+不重启Java 进程，导出dump 文件的方法#首先，查看gc 情况：jstat -gcutil $pid $time
+$ jstat -gcutil $pid $timeS0 S1 E O M CCS YGC YGCT FGC FGCT GCT0.00 100.00 12.91 61.13 96.44 93.83 201 56.754 4 58.699 115.4530.00 100.00 4.25 51.06 96.44 93.83 202 56.783 4 58.699 115.4820.00 100.00 10.68 60.63 96.44 93.83 202 56.783 4 58.699 115.482手动导出当前时点的dump 文件#jmap -dump:format=b,file=$dump_file_path $pid另一种方式：</description>
+    </item>
+    
+    <item>
       <title>使用Keepalived 实现Nginx 双机热备</title>
       <link>https://cevin15.github.io/docs/%E7%BD%91%E7%BB%9C%E4%B8%8E%E8%BF%90%E7%BB%B4/%E4%BD%BF%E7%94%A8_Keepalived_%E5%AE%9E%E7%8E%B0_Nginx_%E5%8F%8C%E6%9C%BA%E7%83%AD%E5%A4%87/</link>
       <pubDate>Wed, 01 Dec 2021 20:05:43 +0800</pubDate>

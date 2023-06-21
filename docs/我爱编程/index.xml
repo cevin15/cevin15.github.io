@@ -5,7 +5,7 @@
     <link>https://cevin15.github.io/docs/%E6%88%91%E7%88%B1%E7%BC%96%E7%A8%8B/</link>
     <description>Recent content in 我爱编程 on 英强的博客</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Sat, 01 Jan 2022 08:57:43 +0800</lastBuildDate><atom:link href="https://cevin15.github.io/docs/%E6%88%91%E7%88%B1%E7%BC%96%E7%A8%8B/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 26 May 2022 09:27:43 +0800</lastBuildDate><atom:link href="https://cevin15.github.io/docs/%E6%88%91%E7%88%B1%E7%BC%96%E7%A8%8B/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>使用 SpringCloud Config 作为配置中心</title>
       <link>https://cevin15.github.io/docs/%E6%88%91%E7%88%B1%E7%BC%96%E7%A8%8B/%E4%BD%BF%E7%94%A8_SpringCloud_Config_%E4%BD%9C%E4%B8%BA%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83/</link>
@@ -20,6 +20,17 @@ Config Server#创建一个普通的SpringBoot 项目。 如果使用默认的
 &amp;lt;dependencies&amp;gt; &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.springframework.cloud&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;spring-cloud-config-server&amp;lt;/artifactId&amp;gt; &amp;lt;/dependency&amp;gt; &amp;lt;/dependencies&amp;gt; 项目配置，application.yaml
 server: port: 8001 spring: application: name: configServer cloud: config: server: git: ## 此处配置Git 仓库地址；如果是私有仓库，需要配置账号密码 uri: https://gitee.com/cevin15/config.git username: xxx password: xxx 项目启动类，ConfigerApplication.java
 @EnableConfigServer @SpringBootApplication public class ConfigServerApplication { public static void main(String[] args) { SpringApplication.</description>
+    </item>
+    
+    <item>
+      <title>不重启Java 进程，导出dump 文件的方法</title>
+      <link>https://cevin15.github.io/docs/%E6%88%91%E7%88%B1%E7%BC%96%E7%A8%8B/%E4%B8%8D%E9%87%8D%E5%90%AFJava-%E8%BF%9B%E7%A8%8B%E5%AF%BC%E5%87%BAdump_%E6%96%87%E4%BB%B6%E7%9A%84%E6%96%B9%E6%B3%95/</link>
+      <pubDate>Thu, 26 May 2022 09:27:43 +0800</pubDate>
+      
+      <guid>https://cevin15.github.io/docs/%E6%88%91%E7%88%B1%E7%BC%96%E7%A8%8B/%E4%B8%8D%E9%87%8D%E5%90%AFJava-%E8%BF%9B%E7%A8%8B%E5%AF%BC%E5%87%BAdump_%E6%96%87%E4%BB%B6%E7%9A%84%E6%96%B9%E6%B3%95/</guid>
+      <description>CentOS 7.x 扩容#2022-05-26 09:27
+不重启Java 进程，导出dump 文件的方法#首先，查看gc 情况：jstat -gcutil $pid $time
+$ jstat -gcutil $pid $timeS0 S1 E O M CCS YGC YGCT FGC FGCT GCT0.00 100.00 12.91 61.13 96.44 93.83 201 56.754 4 58.699 115.4530.00 100.00 4.25 51.06 96.44 93.83 202 56.783 4 58.699 115.4820.00 100.00 10.68 60.63 96.44 93.83 202 56.783 4 58.699 115.482手动导出当前时点的dump 文件#jmap -dump:format=b,file=$dump_file_path $pid另一种方式：</description>
     </item>
     
     <item>

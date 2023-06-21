@@ -1,22 +1,22 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
-	<meta name="generator" content="Hugo 0.88.1" />
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="你好，我是英强#2021-10-08 22:41
-你好，我是英强。
-一个程序员，写了十年的Java代码。近两三年开始把更多的兴趣放在了应用系统运维上。
-博客主要作为自己的工作备忘，记录些自己觉得有用的东西。
-如果有幸能被你看到，并且还觉得有点用，那真是有幸。
-Enjoy it :-)">
+<meta name="description" content="CentOS 7.x 扩容#2022-05-26 09:27
+不重启Java 进程，导出dump 文件的方法#首先，查看gc 情况：jstat -gcutil $pid $time
+$ jstat -gcutil $pid $timeS0 S1 E O M CCS YGC YGCT FGC FGCT GCT0.00 100.00 12.91 61.13 96.44 93.83 201 56.754 4 58.699 115.4530.00 100.00 4.25 51.06 96.44 93.83 202 56.783 4 58.699 115.4820.00 100.00 10.68 60.63 96.44 93.83 202 56.783 4 58.699 115.482手动导出当前时点的dump 文件#jmap -dump:format=b,file=$dump_file_path $pid另一种方式：">
 <meta name="theme-color" content="#FFFFFF">
-<meta name="color-scheme" content="light dark"><meta property="og:title" content="你好，我是英强" />
-<meta property="og:description" content="" />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://cevin15.github.io/" />
+<meta name="color-scheme" content="light dark"><meta property="og:title" content="不重启Java 进程，导出dump 文件的方法" />
+<meta property="og:description" content="CentOS 7.x 扩容#2022-05-26 09:27
+不重启Java 进程，导出dump 文件的方法#首先，查看gc 情况：jstat -gcutil $pid $time
+$ jstat -gcutil $pid $timeS0 S1 E O M CCS YGC YGCT FGC FGCT GCT0.00 100.00 12.91 61.13 96.44 93.83 201 56.754 4 58.699 115.4530.00 100.00 4.25 51.06 96.44 93.83 202 56.783 4 58.699 115.4820.00 100.00 10.68 60.63 96.44 93.83 202 56.783 4 58.699 115.482手动导出当前时点的dump 文件#jmap -dump:format=b,file=$dump_file_path $pid另一种方式：" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://cevin15.github.io/docs/%E6%88%91%E7%88%B1%E7%BC%96%E7%A8%8B/%E4%B8%8D%E9%87%8D%E5%90%AFJava-%E8%BF%9B%E7%A8%8B%E5%AF%BC%E5%87%BAdump_%E6%96%87%E4%BB%B6%E7%9A%84%E6%96%B9%E6%B3%95/" /><meta property="article:section" content="docs" />
+<meta property="article:published_time" content="2022-05-26T09:27:43+08:00" />
+<meta property="article:modified_time" content="2022-05-26T09:27:43+08:00" />
 
-<title>你好，我是英强 | 英强的博客</title>
+<title>不重启Java 进程，导出dump 文件的方法 | 英强的博客</title>
 <link rel="manifest" href="/manifest.json">
 <link rel="icon" href="/favicon.png" type="image/x-icon">
 <link rel="stylesheet" href="/book.min.46181bc93375ba932026e753b37c40e6ff8bb16a9ef770c78bcc663e4577b1ba.css" integrity="sha256-RhgbyTN1upMgJudTs3xA5v&#43;LsWqe93DHi8xmPkV3sbo=" crossorigin="anonymous">
@@ -24,7 +24,6 @@ Enjoy it :-)">
   <script defer src="/en.search.min.99063a45fea1173695bf756edfe185afeb766df73c60afd78924243a9abb14f4.js" integrity="sha256-mQY6Rf6hFzaVv3Vu3&#43;GFr&#43;t2bfc8YK/XiSQkOpq7FPQ=" crossorigin="anonymous"></script>
 
   <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
-<link rel="alternate" type="application/rss+xml" href="https://cevin15.github.io/index.xml" title="英强的博客" />
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -315,7 +314,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="https://cevin15.github.io/docs/%E6%88%91%E7%88%B1%E7%BC%96%E7%A8%8B/%E4%B8%8D%E9%87%8D%E5%90%AFJava-%E8%BF%9B%E7%A8%8B%E5%AF%BC%E5%87%BAdump_%E6%96%87%E4%BB%B6%E7%9A%84%E6%96%B9%E6%B3%95/" class="">不重启Java 进程，导出dump 文件的方法</a>
+    <a href="https://cevin15.github.io/docs/%E6%88%91%E7%88%B1%E7%BC%96%E7%A8%8B/%E4%B8%8D%E9%87%8D%E5%90%AFJava-%E8%BF%9B%E7%A8%8B%E5%AF%BC%E5%87%BAdump_%E6%96%87%E4%BB%B6%E7%9A%84%E6%96%B9%E6%B3%95/" class=" active">不重启Java 进程，导出dump 文件的方法</a>
   
 
         </li>
@@ -388,7 +387,7 @@ https://github.com/alex-shpak/hugo-book
     <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
   </label>
 
-  <strong>你好，我是英强</strong>
+  <strong>不重启Java 进程，导出dump 文件的方法</strong>
 
   <label for="toc-control">
     
@@ -404,7 +403,14 @@ https://github.com/alex-shpak/hugo-book
   
 <nav id="TableOfContents">
   <ul>
-    <li><a href="#你好我是英强">你好，我是英强</a></li>
+    <li><a href="#centos-7x-扩容">CentOS 7.x 扩容</a></li>
+    <li><a href="#不重启java-进程导出dump-文件的方法">不重启Java 进程，导出dump 文件的方法</a>
+      <ul>
+        <li><a href="#手动导出当前时点的dump-文件">手动导出当前时点的dump 文件</a></li>
+        <li><a href="#在jvm-发生异常时自动导出dump-文件">在jvm 发生异常时，自动导出dump 文件</a></li>
+        <li><a href="#分析dump-文件">分析dump 文件</a></li>
+      </ul>
+    </li>
   </ul>
 </nav>
 
@@ -417,16 +423,70 @@ https://github.com/alex-shpak/hugo-book
 
       
       
-  <article class="markdown"><h1 id="你好我是英强">
-  你好，我是英强
-  <a class="anchor" href="#%e4%bd%a0%e5%a5%bd%e6%88%91%e6%98%af%e8%8b%b1%e5%bc%ba">#</a>
+  <article class="markdown"><h1 id="centos-7x-扩容">
+  CentOS 7.x 扩容
+  <a class="anchor" href="#centos-7x-%e6%89%a9%e5%ae%b9">#</a>
 </h1>
-<p><em>2021-10-08 22:41</em></p>
-<p>你好，我是英强。</p>
-<p>一个程序员，写了十年的Java代码。近两三年开始把更多的兴趣放在了应用系统运维上。</p>
-<p>博客主要作为自己的工作备忘，记录些自己觉得有用的东西。</p>
-<p>如果有幸能被你看到，并且还觉得有点用，那真是有幸。</p>
-<p>Enjoy it :-)</p>
+<p><em>2022-05-26</em> <em>09:27</em></p>
+<h1 id="不重启java-进程导出dump-文件的方法">
+  不重启Java 进程，导出dump 文件的方法
+  <a class="anchor" href="#%e4%b8%8d%e9%87%8d%e5%90%afjava-%e8%bf%9b%e7%a8%8b%e5%af%bc%e5%87%badump-%e6%96%87%e4%bb%b6%e7%9a%84%e6%96%b9%e6%b3%95">#</a>
+</h1>
+<p>首先，查看gc 情况：<code>jstat -gcutil $pid $time</code></p>
+<pre tabindex="0"><code>$ jstat -gcutil $pid $time
+S0     S1     E      O      M     CCS    YGC     YGCT    FGC    FGCT     GCT
+0.00 100.00  12.91  61.13  96.44  93.83    201   56.754     4   58.699  115.453
+0.00 100.00   4.25  51.06  96.44  93.83    202   56.783     4   58.699  115.482
+0.00 100.00  10.68  60.63  96.44  93.83    202   56.783     4   58.699  115.482
+</code></pre><h2 id="手动导出当前时点的dump-文件">
+  手动导出当前时点的dump 文件
+  <a class="anchor" href="#%e6%89%8b%e5%8a%a8%e5%af%bc%e5%87%ba%e5%bd%93%e5%89%8d%e6%97%b6%e7%82%b9%e7%9a%84dump-%e6%96%87%e4%bb%b6">#</a>
+</h2>
+<pre tabindex="0"><code>jmap -dump:format=b,file=$dump_file_path $pid
+</code></pre><p>另一种方式：</p>
+<pre tabindex="0"><code>jcmd $pid GC.heap_dump -all $dump_file_path
+</code></pre><h2 id="在jvm-发生异常时自动导出dump-文件">
+  在jvm 发生异常时，自动导出dump 文件
+  <a class="anchor" href="#%e5%9c%a8jvm-%e5%8f%91%e7%94%9f%e5%bc%82%e5%b8%b8%e6%97%b6%e8%87%aa%e5%8a%a8%e5%af%bc%e5%87%badump-%e6%96%87%e4%bb%b6">#</a>
+</h2>
+<ol>
+<li>
+<p>查看jinfo 可以调整的参数：<code>java -XX:+PrintFlagsFinal -version|grep manageable</code></p>
+<pre tabindex="0"><code>$ java -XX:+PrintFlagsFinal -version|grep manageable
+    ……
+    bool HeapDumpAfterFullGC                       = false                               {manageable}
+    bool HeapDumpBeforeFullGC                      = false                               {manageable}
+    bool HeapDumpOnOutOfMemoryError                = false                               {manageable}
+    ccstr HeapDumpPath                              =                                     {manageable}
+    ……
+</code></pre><p>主要关注以上几个参数：</p>
+<ol>
+<li>FullGC 前导出：HeapDumpBeforeFullGC</li>
+<li>FullGC 后导出：HeapDumpAfterFullGC</li>
+<li>发生OutOfMemory 时导出：HeapDumpOnOutOfMemoryError</li>
+<li>dump文件保存目录：HeapDumpPath</li>
+</ol>
+</li>
+<li>
+<p>设置jvm参数，fullgc前dump 文件：<code>jinfo -flag +HeapDumpBeforeFullGC $pid</code></p>
+</li>
+<li>
+<p>设置dump文件保存目录：<code>jinfo -flag HeapDumpPath=$file_path $pid</code></p>
+</li>
+<li>
+<p>查看jinfo设置的参数值：<code>jinfo -flag $param_name $pid</code>，比如<code>jinfo -flag HeapDumpPath 9846</code></p>
+</li>
+</ol>
+<h2 id="分析dump-文件">
+  分析dump 文件
+  <a class="anchor" href="#%e5%88%86%e6%9e%90dump-%e6%96%87%e4%bb%b6">#</a>
+</h2>
+<p>使用
+  <a href="https://www.eclipse.org/mat/"><strong>MAT</strong></a> 查看分析dump文件，通常使用这两个菜单。</p>
+<blockquote>
+<p><strong><em>Histogram</em></strong>: Lists number of instances per class<br>
+<strong><em>Dominator Tree</em></strong>: List the biggest objects and what they keep alive.</p>
+</blockquote>
 </article>
  
       
@@ -468,7 +528,14 @@ https://github.com/alex-shpak/hugo-book
   
 <nav id="TableOfContents">
   <ul>
-    <li><a href="#你好我是英强">你好，我是英强</a></li>
+    <li><a href="#centos-7x-扩容">CentOS 7.x 扩容</a></li>
+    <li><a href="#不重启java-进程导出dump-文件的方法">不重启Java 进程，导出dump 文件的方法</a>
+      <ul>
+        <li><a href="#手动导出当前时点的dump-文件">手动导出当前时点的dump 文件</a></li>
+        <li><a href="#在jvm-发生异常时自动导出dump-文件">在jvm 发生异常时，自动导出dump 文件</a></li>
+        <li><a href="#分析dump-文件">分析dump 文件</a></li>
+      </ul>
+    </li>
   </ul>
 </nav>
 
